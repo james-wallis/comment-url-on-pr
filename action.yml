@@ -7,10 +7,10 @@ inputs:
     description: 'A title for the comment'
   status:
     required: true
-    description: 'The status of the environment (${{ job.status }} or one of success, failure, cancelled, building and deleted).'
+    description: 'The status of the environment (job.status or one of success, failure, cancelled, building and deleted).'
   github_token:
     required: true
-    description: 'A GitHub API token (${{ github.token }})'
+    description: 'A GitHub API token (github.token)'
 runs:
-  using: 'node14'
+  using: 'node12'
   main: 'dist/index.js'

@@ -21,4 +21,6 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./
         with:
-          milliseconds: 1000
+          title: 'Test'
+          status: ${{ job.status }}
+          github_token: ${{ github.token }}

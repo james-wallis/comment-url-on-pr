@@ -24,8 +24,3 @@ jobs:
           title: 'Test'
           status: ${{ job.status }}
           github_token: ${{ github.token }}
-          urls:
-            - name: 1
-              url: https://wallis.dev
-            - name: another
-              url: https://google.com

@@ -4,6 +4,7 @@ import { createComment } from './comments'
 import { commentOnPullRequest, getWorkflowUrl } from './github'
 import { EnvironmentStatus } from './types/EnvironmentStatus'
 import { Octokit } from './types/Octokit'
+import { getEnvironmentUrlsFromInput } from './utils'
 
 async function main(): Promise<void> {
   const required: core.InputOptions = { required: true }
@@ -11,9 +12,8 @@ async function main(): Promise<void> {
   const title = core.getInput('title', required)
   const status = core.getInput('status', required) as EnvironmentStatus
   const github_token = core.getInput('github_token', required)
-  const urls = core.getInput('urls', required)
-  // eslint-disable-next-line no-console
-  console.log(urls)
+
+  const urls = getEnvironmentUrlsFromInput()
 
   if (!Object.values(EnvironmentStatus).includes(status)) {
     throw new Error(`Invalid status '${status}' given`)
@@ -29,7 +29,7 @@ async function main(): Promise<void> {
 
   const workflowUrl = await getWorkflowUrl(octokit, owner, repo, runId)
 
-  const commentBody = createComment(title, status, workflowUrl)
+  const commentBody = createComment(title, status, workflowUrl, urls)
 
   await commentOnPullRequest(octokit, owner, repo, ref, commentBody)
 }

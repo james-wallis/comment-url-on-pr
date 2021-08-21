@@ -26,7 +26,20 @@ const workflowText = (type, url) => {
     const status = utils_1.getWorkflowStatusText(type);
     return `${icon} &nbsp;${status}GitHub Workflow: ${url}`;
 };
-const createComment = (title, type, workflowUrl) => {
+const urlsText = ({ classicCms, launcher, skylark }) => {
+    let text = '';
+    if (skylark) {
+        text += `☁️ &nbsp;Skylark URL: ${skylark}\n`;
+    }
+    if (launcher) {
+        text += `🚀 &nbsp;Launcher URL: ${launcher}\n`;
+    }
+    if (classicCms) {
+        text += `🏛️ &nbsp;Classic CMS URL: ${classicCms}\n`;
+    }
+    return text;
+};
+const createComment = (title, type, workflowUrl, urls) => {
     let infoText = `${pullRequestText(type)}\n${deploymentStatusText}`;
     if (type === EnvironmentStatus_1.EnvironmentStatus.Deleted) {
         infoText = deletionText;
@@ -37,10 +50,10 @@ ${convertTitleToMarkdown(title)}
 ${infoText}
 
 ${workflowText(type, workflowUrl)}
+${urlsText(urls)}
 `;
 };
 exports.createComment = createComment;
-// ${cmsUrl ? `➡️ &nbsp;Cloudfront URL: ${cmsUrl}` : ''}
 
 
 /***/ }),
@@ -193,22 +206,21 @@ const github = __importStar(__nccwpck_require__(438));
 const comments_1 = __nccwpck_require__(910);
 const github_1 = __nccwpck_require__(928);
 const EnvironmentStatus_1 = __nccwpck_require__(470);
+const utils_1 = __nccwpck_require__(918);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const required = { required: true };
         const title = core.getInput('title', required);
         const status = core.getInput('status', required);
         const github_token = core.getInput('github_token', required);
-        const urls = core.getInput('urls', required);
-        // eslint-disable-next-line no-console
-        console.log(urls);
+        const urls = utils_1.getEnvironmentUrlsFromInput();
         if (!Object.values(EnvironmentStatus_1.EnvironmentStatus).includes(status)) {
             throw new Error(`Invalid status '${status}' given`);
         }
         const octokit = github.getOctokit(github_token);
         const { repo: { owner, repo }, runId, ref } = github.context;
         const workflowUrl = yield github_1.getWorkflowUrl(octokit, owner, repo, runId);
-        const commentBody = comments_1.createComment(title, status, workflowUrl);
+        const commentBody = comments_1.createComment(title, status, workflowUrl, urls);
         yield github_1.commentOnPullRequest(octokit, owner, repo, ref, commentBody);
     });
 }
@@ -244,7 +256,8 @@ var EnvironmentStatus;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getWorkflowStatusText = exports.getWorkflowIcon = void 0;
+exports.getEnvironmentUrlsFromInput = exports.getWorkflowStatusText = exports.getWorkflowIcon = void 0;
+const core_1 = __nccwpck_require__(186);
 const constants_1 = __nccwpck_require__(105);
 const EnvironmentStatus_1 = __nccwpck_require__(470);
 const getWorkflowIcon = (type) => {
@@ -289,6 +302,15 @@ const getWorkflowStatusText = (type) => {
     return text ? `[${text}] ` : '';
 };
 exports.getWorkflowStatusText = getWorkflowStatusText;
+const getEnvironmentUrlsFromInput = () => {
+    const urls = {
+        classicCms: core_1.getInput('classic_cms_url'),
+        launcher: core_1.getInput('launcher_url'),
+        skylark: core_1.getInput('skylark_url')
+    };
+    return urls;
+};
+exports.getEnvironmentUrlsFromInput = getEnvironmentUrlsFromInput;
 
 
 /***/ }),

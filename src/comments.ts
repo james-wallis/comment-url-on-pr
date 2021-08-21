@@ -1,6 +1,7 @@
 import { COMMENT_PREFIX } from './constants'
 import { getWorkflowIcon, getWorkflowStatusText } from './utils'
 import { EnvironmentStatus } from './types/EnvironmentStatus'
+import { EnvironmentUrls } from './types/EnvironmentUrls'
 
 const convertTitleToMarkdown = (title: string): string => `### ${title}`
 
@@ -23,7 +24,30 @@ const workflowText = (type: EnvironmentStatus, url: string): string => {
   return `${icon} &nbsp;${status}GitHub Workflow: ${url}`
 }
 
-export const createComment = (title: string, type: EnvironmentStatus, workflowUrl: string): string => {
+const urlsText = ({ classicCms, launcher, skylark }: EnvironmentUrls): string => {
+  let text = ''
+
+  if (skylark) {
+    text += `☁️ &nbsp;Skylark URL: ${skylark}\n`
+  }
+
+  if (launcher) {
+    text += `🚀 &nbsp;Launcher URL: ${launcher}\n`
+  }
+
+  if (classicCms) {
+    text += `🏛️ &nbsp;Classic CMS URL: ${classicCms}\n`
+  }
+
+  return text
+}
+
+export const createComment = (
+  title: string,
+  type: EnvironmentStatus,
+  workflowUrl: string,
+  urls: EnvironmentUrls
+): string => {
   let infoText = `${pullRequestText(type)}\n${deploymentStatusText}`
   if (type === EnvironmentStatus.Deleted) {
     infoText = deletionText
@@ -35,7 +59,6 @@ ${convertTitleToMarkdown(title)}
 ${infoText}
 
 ${workflowText(type, workflowUrl)}
+${urlsText(urls)}
 `
 }
-
-// ${cmsUrl ? `➡️ &nbsp;Cloudfront URL: ${cmsUrl}` : ''}

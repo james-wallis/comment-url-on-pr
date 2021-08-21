@@ -1,7 +1,7 @@
 import { COMMENT_PREFIX } from './constants'
 import { getWorkflowIcon, getWorkflowStatusText } from './utils'
-import { EnvironmentStatus } from './types/EnvironmentStatus'
-import { EnvironmentUrls } from './types/EnvironmentUrls'
+import { EnvironmentStatus } from '../types/EnvironmentStatus'
+import { EnvironmentUrls } from '../types/EnvironmentUrls'
 
 const convertTitleToMarkdown = (title: string): string => `### ${title}`
 

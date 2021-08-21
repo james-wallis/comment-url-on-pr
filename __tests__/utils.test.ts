@@ -1,7 +1,7 @@
 import { expect, it, describe } from '@jest/globals'
-import { getWorkflowIcon, getWorkflowStatusText } from '../src/utils'
+import { getWorkflowIcon, getWorkflowStatusText } from '../src/lib/utils'
 import { EnvironmentStatus } from '../src/types/EnvironmentStatus'
-import { ICONS } from '../src/constants'
+import { ICONS } from '../src/lib/constants'
 
 describe('Utils', () => {
   describe('getWorkflowIcon', () => {

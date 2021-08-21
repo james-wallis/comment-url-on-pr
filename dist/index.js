@@ -1,16 +1,16 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 910:
+/***/ 118:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createComment = void 0;
-const constants_1 = __nccwpck_require__(105);
-const utils_1 = __nccwpck_require__(918);
-const EnvironmentStatus_1 = __nccwpck_require__(470);
+const constants_1 = __nccwpck_require__(77);
+const utils_1 = __nccwpck_require__(140);
+const EnvironmentStatus_1 = __nccwpck_require__(601);
 const convertTitleToMarkdown = (title) => `### ${title}`;
 const deletionText = 'The environment for this branch has been deleted.';
 const deploymentStatusText = 'To see the status of your deployment, click below or on the icon next to each commit.';
@@ -59,7 +59,7 @@ exports.createComment = createComment;
 
 /***/ }),
 
-/***/ 105:
+/***/ 77:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -79,7 +79,7 @@ exports.ICONS = {
 
 /***/ }),
 
-/***/ 928:
+/***/ 295:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -95,7 +95,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getWorkflowUrl = exports.commentOnPullRequest = void 0;
-const constants_1 = __nccwpck_require__(105);
+const constants_1 = __nccwpck_require__(77);
 // returns the pull request number (if one exists) given a branch ref
 const getPullRequestNumber = (octokit, owner, repo, ref) => __awaiter(void 0, void 0, void 0, function* () {
     // If pull request, return the pull number
@@ -168,7 +168,7 @@ exports.getWorkflowUrl = getWorkflowUrl;
 
 /***/ }),
 
-/***/ 109:
+/***/ 538:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -204,10 +204,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 const github = __importStar(__nccwpck_require__(438));
-const comments_1 = __nccwpck_require__(910);
-const github_1 = __nccwpck_require__(928);
-const EnvironmentStatus_1 = __nccwpck_require__(470);
-const utils_1 = __nccwpck_require__(918);
+const comments_1 = __nccwpck_require__(118);
+const github_1 = __nccwpck_require__(295);
+const EnvironmentStatus_1 = __nccwpck_require__(601);
+const utils_1 = __nccwpck_require__(140);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const required = { required: true };
@@ -231,7 +231,7 @@ main().catch((err) => core.setFailed(err.message));
 
 /***/ }),
 
-/***/ 470:
+/***/ 601:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -251,7 +251,7 @@ var EnvironmentStatus;
 
 /***/ }),
 
-/***/ 918:
+/***/ 140:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -259,8 +259,8 @@ var EnvironmentStatus;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getEnvironmentUrlsFromInput = exports.getWorkflowStatusText = exports.getWorkflowIcon = void 0;
 const core_1 = __nccwpck_require__(186);
-const constants_1 = __nccwpck_require__(105);
-const EnvironmentStatus_1 = __nccwpck_require__(470);
+const constants_1 = __nccwpck_require__(77);
+const EnvironmentStatus_1 = __nccwpck_require__(601);
 const getWorkflowIcon = (type) => {
     switch (type) {
         case EnvironmentStatus_1.EnvironmentStatus.Success:
@@ -6599,7 +6599,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(109);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(538);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

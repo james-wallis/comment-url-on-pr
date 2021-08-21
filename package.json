@@ -1,9 +1,9 @@
 {
-  "name": "typescript-action",
+  "name": "comment-skylark-url-on-pr",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
-  "main": "lib/main.js",
+  "description": "A GitHub Action that comments Skylark related URLs on a pull request",
+  "main": "build/main.js",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write **/*.ts",
@@ -14,14 +14,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/..."
   },
   "keywords": [
     "actions",
-    "node",
-    "setup"
+    "node"
   ],
-  "author": "",
+  "author": "James Wallis",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.4.0",

@@ -1,5 +1,5 @@
-name: 'Comment environment URLs on a Pull Request'
-description: 'Comments URLs for environments created in a GitHub Workflow on the corresponding Pull Request (if exists)'
+name: 'Comment Skylark related URLs on a pull request'
+description: 'Comments given Skylark URLs on a corresponding Pull Request (if one exists)'
 author: 'James Wallis'
 inputs:
   title:

@@ -1,5 +1,5 @@
 import { COMMENT_PREFIX } from './constants'
-import { Octokit } from './types/Octokit'
+import { Octokit } from '../types/Octokit'
 
 // returns the pull request number (if one exists) given a branch ref
 const getPullRequestNumber = async (

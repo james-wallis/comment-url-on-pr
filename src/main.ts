@@ -1,10 +1,10 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-import { createComment } from './comments'
-import { commentOnPullRequest, getWorkflowUrl } from './github'
+import { createComment } from './lib/comments'
+import { commentOnPullRequest, getWorkflowUrl } from './lib/github'
 import { EnvironmentStatus } from './types/EnvironmentStatus'
 import { Octokit } from './types/Octokit'
-import { getEnvironmentUrlsFromInput } from './utils'
+import { getEnvironmentUrlsFromInput } from './lib/utils'
 
 async function main(): Promise<void> {
   const required: core.InputOptions = { required: true }

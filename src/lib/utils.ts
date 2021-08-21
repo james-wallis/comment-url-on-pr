@@ -1,7 +1,7 @@
 import { getInput } from '@actions/core'
 import { ICONS } from './constants'
-import { EnvironmentStatus } from './types/EnvironmentStatus'
-import { EnvironmentUrls } from './types/EnvironmentUrls'
+import { EnvironmentStatus } from '../types/EnvironmentStatus'
+import { EnvironmentUrls } from '../types/EnvironmentUrls'
 
 export const getWorkflowIcon = (type: EnvironmentStatus): string => {
   switch (type) {

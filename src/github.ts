@@ -8,6 +8,11 @@ const getPullRequestNumber = async (
   repo: string,
   ref: string
 ): Promise<number | undefined> => {
+  // If pull request, return the pull number
+  if (ref.startsWith('refs/pull/')) {
+    return parseInt(ref.split('/')[2])
+  }
+
   if (!ref.startsWith('refs/heads/')) {
     return
   }

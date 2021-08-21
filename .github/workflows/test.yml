@@ -24,3 +24,4 @@ jobs:
           title: 'Test'
           status: ${{ job.status }}
           github_token: ${{ github.token }}
+          classic_cms_url: https://wallis.dev

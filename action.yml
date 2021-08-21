@@ -11,6 +11,9 @@ inputs:
   github_token:
     required: true
     description: 'A GitHub API token (github.token)'
+  urls:
+    required: true
+    description: 'URL array'
 runs:
   using: 'node12'
   main: 'dist/index.js'

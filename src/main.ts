@@ -11,6 +11,9 @@ async function main(): Promise<void> {
   const title = core.getInput('title', required)
   const status = core.getInput('status', required) as EnvironmentStatus
   const github_token = core.getInput('github_token', required)
+  const urls = core.getInput('urls', required)
+  // eslint-disable-next-line no-console
+  console.log(urls)
 
   if (!Object.values(EnvironmentStatus).includes(status)) {
     throw new Error(`Invalid status '${status}' given`)

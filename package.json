@@ -1,33 +1,33 @@
 {
-  "name": "typescript-action",
+  "name": "comment-skylark-url-on-pr",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
-  "main": "lib/main.js",
+  "description": "A GitHub Action that comments Skylark related URLs on a pull request",
+  "main": "build/main.js",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
     "package": "ncc build --source-map --license licenses.txt",
-    "test": "jest",
-    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/..."
   },
   "keywords": [
     "actions",
-    "node",
-    "setup"
+    "node"
   ],
-  "author": "",
+  "author": "James Wallis",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.4.0"
+    "@actions/core": "^1.4.0",
+    "@actions/github": "^5.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^27.0.1",
     "@types/node": "^16.3.3",
     "@typescript-eslint/parser": "^4.28.3",
     "@vercel/ncc": "^0.29.0",

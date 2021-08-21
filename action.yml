@@ -1,11 +1,22 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Comment Skylark related URLs on a pull request'
+description: 'Comments given Skylark URLs on a corresponding Pull Request (if one exists)'
+author: 'James Wallis'
 inputs:
-  milliseconds: # change this
+  title:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'A title for the comment'
+  status:
+    required: true
+    description: 'The status of the environment (job.status or one of success, failure, cancelled, building and deleted).'
+  github_token:
+    required: true
+    description: 'A GitHub API token (github.token)'
+  skylark_url:
+    description: 'URL pointing at a Skylark API'
+  classic_cms_url:
+    description: 'URL for a Classic CMS'
+  launcher_url:
+    description: 'URL for a Launcher'
 runs:
   using: 'node12'
   main: 'dist/index.js'

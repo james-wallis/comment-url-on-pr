@@ -9,13 +9,13 @@ const getPullRequestNumber = async (
   ref: string
 ): Promise<number | undefined> => {
   // If pull request, return the pull number
-  // if (ref.startsWith('refs/pull/')) {
-  //   return parseInt(ref.split('/')[2])
-  // }
+  if (ref.startsWith('refs/pull/')) {
+    return parseInt(ref.split('/')[2])
+  }
 
-  // if (!ref.startsWith('refs/heads/')) {
-  //   return
-  // }
+  if (!ref.startsWith('refs/heads/')) {
+    return
+  }
 
   const pulls = await octokit.rest.pulls.list({
     owner,
@@ -23,11 +23,7 @@ const getPullRequestNumber = async (
   })
 
   const branchName = ref.replace('refs/heads/', '')
-  const pullRequest = pulls.data.find(({ head: { ref } }) => {
-    // eslint-disable-next-line no-console
-    console.log('ref', ref)
-    return ref === branchName
-  })
+  const pullRequest = pulls.data.find(({ head: { ref } }) => ref === branchName)
   if (!pullRequest) {
     return
   }

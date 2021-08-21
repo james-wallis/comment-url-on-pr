@@ -25,3 +25,5 @@ jobs:
           status: ${{ job.status }}
           github_token: ${{ github.token }}
           classic_cms_url: https://wallis.dev
+          skylark_url: https://skylark.com
+          launcher_url: https://launcher.co.uk

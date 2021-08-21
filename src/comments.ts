@@ -24,19 +24,21 @@ const workflowText = (type: EnvironmentStatus, url: string): string => {
   return `${icon} &nbsp;${status}GitHub Workflow: ${url}`
 }
 
+const urlTextLine = (icon: string, name: string, url: string): string => `${icon} &nbsp;${name} URL: ${url}\n`
+
 const urlsText = ({ classicCms, launcher, skylark }: EnvironmentUrls): string => {
   let text = ''
 
   if (skylark) {
-    text += `☁️ &nbsp;Skylark URL: ${skylark}\n`
+    text += urlTextLine('☁️', 'Skylark', skylark)
   }
 
   if (launcher) {
-    text += `🚀 &nbsp;Launcher URL: ${launcher}\n`
+    text += urlTextLine('🚀', 'Launcher', launcher)
   }
 
   if (classicCms) {
-    text += `🏛️ &nbsp;Classic CMS URL: ${classicCms}\n`
+    text += urlTextLine('🏛️', 'Classic CMS', classicCms)
   }
 
   return text

@@ -84,15 +84,23 @@ exports.getWorkflowUrl = exports.commentOnPullRequest = void 0;
 const constants_1 = __nccwpck_require__(105);
 // returns the pull request number (if one exists) given a branch ref
 const getPullRequestNumber = (octokit, owner, repo, ref) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!ref.startsWith('refs/heads/')) {
-        return;
-    }
+    // If pull request, return the pull number
+    // if (ref.startsWith('refs/pull/')) {
+    //   return parseInt(ref.split('/')[2])
+    // }
+    // if (!ref.startsWith('refs/heads/')) {
+    //   return
+    // }
     const pulls = yield octokit.rest.pulls.list({
         owner,
         repo
     });
     const branchName = ref.replace('refs/heads/', '');
-    const pullRequest = pulls.data.find(({ head: { ref } }) => ref === branchName);
+    const pullRequest = pulls.data.find(({ head: { ref } }) => {
+        // eslint-disable-next-line no-console
+        console.log('ref', ref);
+        return ref === branchName;
+    });
     if (!pullRequest) {
         return;
     }

@@ -2,8 +2,8 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import { createComment } from './lib/comments'
 import { commentOnPullRequest, getPullRequestNumber, getWorkflowUrl } from './lib/github'
-import { EnvironmentStatus } from './types/EnvironmentStatus'
-import { Octokit } from './types/Octokit'
+import { EnvironmentStatus } from './types/environmentStatus'
+import { Octokit } from './types/octokit'
 import { getEnvironmentUrlsFromInput } from './lib/utils'
 
 async function main(): Promise<void> {

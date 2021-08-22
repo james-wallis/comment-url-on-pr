@@ -1,58 +1,72 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 910:
+/***/ 930:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createComment = void 0;
-const constants_1 = __nccwpck_require__(105);
-const utils_1 = __nccwpck_require__(918);
-const EnvironmentStatus_1 = __nccwpck_require__(470);
+const constants_1 = __nccwpck_require__(345);
+const utils_1 = __nccwpck_require__(529);
+const EnvironmentStatus_1 = __nccwpck_require__(601);
 const convertTitleToMarkdown = (title) => `### ${title}`;
 const deletionText = 'The environment for this branch has been deleted.';
 const deploymentStatusText = 'To see the status of your deployment, click below or on the icon next to each commit.';
 const pullRequestText = (type) => {
+    if (type === EnvironmentStatus_1.EnvironmentStatus.Deleted) {
+        return deletionText;
+    }
     let isBeing = 'is being';
     if (type === EnvironmentStatus_1.EnvironmentStatus.Success) {
         isBeing = 'has been';
     }
-    return `This pull request ${isBeing} automatically deployed to an ephemeral environment on AWS.`;
+    return `This pull request ${isBeing} automatically deployed.`;
 };
 const workflowText = (type, url) => {
     const icon = utils_1.getWorkflowIcon(type);
     const status = utils_1.getWorkflowStatusText(type);
     return `${icon} &nbsp;${status}GitHub Workflow: ${url}`;
 };
-const createComment = (title, type, workflowUrl) => {
-    let infoText = `${pullRequestText(type)}\n${deploymentStatusText}`;
-    if (type === EnvironmentStatus_1.EnvironmentStatus.Deleted) {
-        infoText = deletionText;
+const urlTextLine = (icon, name, url) => `${icon} &nbsp;${name}: ${url}\n`;
+const urlsText = ({ classicCms, launcher, skylark }) => {
+    let text = '';
+    if (skylark) {
+        text += urlTextLine('☁️', 'Skylark', skylark);
     }
+    if (launcher) {
+        text += urlTextLine('🚀', 'Launcher', launcher);
+    }
+    if (classicCms) {
+        text += urlTextLine('🏛️', 'Classic CMS', classicCms);
+    }
+    return text;
+};
+const createComment = (title, type, workflowUrl, urls) => {
+    const infoText = `${pullRequestText(type)}\n${deploymentStatusText}`;
     return `${constants_1.COMMENT_PREFIX}
 ${convertTitleToMarkdown(title)}
 
 ${infoText}
 
 ${workflowText(type, workflowUrl)}
+${urlsText(urls)}
 `;
 };
 exports.createComment = createComment;
-// ${cmsUrl ? `➡️ &nbsp;Cloudfront URL: ${cmsUrl}` : ''}
 
 
 /***/ }),
 
-/***/ 105:
+/***/ 345:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ICONS = exports.COMMENT_PREFIX = void 0;
-exports.COMMENT_PREFIX = '<!-- ephemeral-comment -->'; // used to find the comment once it has been added to the pull request
+exports.COMMENT_PREFIX = '<!-- comment-url-on-pr -->'; // used to find the comment once it has been added to the pull request
 exports.ICONS = {
     SUCCESS: '✅',
     BUILDING: '🏗️',
@@ -65,7 +79,7 @@ exports.ICONS = {
 
 /***/ }),
 
-/***/ 928:
+/***/ 274:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -81,9 +95,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getWorkflowUrl = exports.commentOnPullRequest = void 0;
-const constants_1 = __nccwpck_require__(105);
+const constants_1 = __nccwpck_require__(345);
 // returns the pull request number (if one exists) given a branch ref
 const getPullRequestNumber = (octokit, owner, repo, ref) => __awaiter(void 0, void 0, void 0, function* () {
+    // If pull request, return the pull number
+    if (ref.startsWith('refs/pull/')) {
+        return parseInt(ref.split('/')[2]);
+    }
     if (!ref.startsWith('refs/heads/')) {
         return;
     }
@@ -150,96 +168,16 @@ exports.getWorkflowUrl = getWorkflowUrl;
 
 /***/ }),
 
-/***/ 109:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __importStar(__nccwpck_require__(186));
-const github = __importStar(__nccwpck_require__(438));
-const comments_1 = __nccwpck_require__(910);
-const github_1 = __nccwpck_require__(928);
-const EnvironmentStatus_1 = __nccwpck_require__(470);
-function main() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const required = { required: true };
-        const title = core.getInput('title', required);
-        const status = core.getInput('status', required);
-        const github_token = core.getInput('github_token', required);
-        if (!Object.values(EnvironmentStatus_1.EnvironmentStatus).includes(status)) {
-            throw new Error(`Invalid status '${status}' given`);
-        }
-        const octokit = github.getOctokit(github_token);
-        const { repo: { owner, repo }, runId, ref } = github.context;
-        const workflowUrl = yield github_1.getWorkflowUrl(octokit, owner, repo, runId);
-        const commentBody = comments_1.createComment(title, status, workflowUrl);
-        yield github_1.commentOnPullRequest(octokit, owner, repo, ref, commentBody);
-    });
-}
-// eslint-disable-next-line github/no-then
-main().catch((err) => core.setFailed(err.message));
-
-
-/***/ }),
-
-/***/ 470:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.EnvironmentStatus = void 0;
-var EnvironmentStatus;
-(function (EnvironmentStatus) {
-    // success, failure and cancelled are valid GitHub Action job.status
-    EnvironmentStatus["Success"] = "success";
-    EnvironmentStatus["Failure"] = "failure";
-    EnvironmentStatus["Cancelled"] = "cancelled";
-    EnvironmentStatus["Building"] = "building";
-    EnvironmentStatus["Deleted"] = "deleted";
-})(EnvironmentStatus = exports.EnvironmentStatus || (exports.EnvironmentStatus = {}));
-
-
-/***/ }),
-
-/***/ 918:
+/***/ 529:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getWorkflowStatusText = exports.getWorkflowIcon = void 0;
-const constants_1 = __nccwpck_require__(105);
-const EnvironmentStatus_1 = __nccwpck_require__(470);
+exports.getEnvironmentUrlsFromInput = exports.getWorkflowStatusText = exports.getWorkflowIcon = void 0;
+const core_1 = __nccwpck_require__(186);
+const constants_1 = __nccwpck_require__(345);
+const EnvironmentStatus_1 = __nccwpck_require__(601);
 const getWorkflowIcon = (type) => {
     switch (type) {
         case EnvironmentStatus_1.EnvironmentStatus.Success:
@@ -282,6 +220,98 @@ const getWorkflowStatusText = (type) => {
     return text ? `[${text}] ` : '';
 };
 exports.getWorkflowStatusText = getWorkflowStatusText;
+const getEnvironmentUrlsFromInput = () => {
+    const urls = {
+        classicCms: core_1.getInput('classic_cms_url'),
+        launcher: core_1.getInput('launcher_url'),
+        skylark: core_1.getInput('skylark_url')
+    };
+    return urls;
+};
+exports.getEnvironmentUrlsFromInput = getEnvironmentUrlsFromInput;
+
+
+/***/ }),
+
+/***/ 538:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const core = __importStar(__nccwpck_require__(186));
+const github = __importStar(__nccwpck_require__(438));
+const comments_1 = __nccwpck_require__(930);
+const github_1 = __nccwpck_require__(274);
+const EnvironmentStatus_1 = __nccwpck_require__(601);
+const utils_1 = __nccwpck_require__(529);
+function main() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const required = { required: true };
+        const title = core.getInput('title', required);
+        const status = core.getInput('status', required);
+        const github_token = core.getInput('github_token', required);
+        const urls = utils_1.getEnvironmentUrlsFromInput();
+        if (!Object.values(EnvironmentStatus_1.EnvironmentStatus).includes(status)) {
+            throw new Error(`Invalid status '${status}' given`);
+        }
+        const octokit = github.getOctokit(github_token);
+        const { repo: { owner, repo }, runId, ref } = github.context;
+        const workflowUrl = yield github_1.getWorkflowUrl(octokit, owner, repo, runId);
+        const commentBody = comments_1.createComment(title, status, workflowUrl, urls);
+        yield github_1.commentOnPullRequest(octokit, owner, repo, ref, commentBody);
+    });
+}
+// eslint-disable-next-line github/no-then
+main().catch((err) => core.setFailed(err.message));
+
+
+/***/ }),
+
+/***/ 601:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.EnvironmentStatus = void 0;
+var EnvironmentStatus;
+(function (EnvironmentStatus) {
+    // success, failure and cancelled are valid GitHub Action job.status
+    EnvironmentStatus["Success"] = "success";
+    EnvironmentStatus["Failure"] = "failure";
+    EnvironmentStatus["Cancelled"] = "cancelled";
+    EnvironmentStatus["Building"] = "building";
+    EnvironmentStatus["Deleted"] = "deleted";
+})(EnvironmentStatus = exports.EnvironmentStatus || (exports.EnvironmentStatus = {}));
 
 
 /***/ }),
@@ -6569,7 +6599,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(109);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(538);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

@@ -1,27 +1,29 @@
 {
-  "name": "typescript-action",
+  "name": "comment-url-on-pr",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
-  "main": "lib/main.js",
+  "description": "A GitHub Action that comments Skylark related URLs on a pull request",
+  "main": "build/main.js",
   "scripts": {
-    "build": "tsc",
-    "format": "prettier --write **/*.ts",
-    "format-check": "prettier --check **/*.ts",
+    "build:compile": "tsc",
+    "build:package": "ncc build --source-map --license licenses.txt",
+    "build:all": "npm run build:compile && npm run build:package",
+    "prettier": "prettier --write **/*.ts",
+    "prettier:check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
-    "package": "ncc build --source-map --license licenses.txt",
-    "test": "jest"
+    "lint:fix": "eslint src/**/*.ts -- --fix",
+    "test": "jest",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/..."
   },
   "keywords": [
     "actions",
-    "node",
-    "setup"
+    "node"
   ],
-  "author": "",
+  "author": "James Wallis",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.4.0",
@@ -35,6 +37,7 @@
     "eslint": "^7.31.0",
     "eslint-plugin-github": "^4.1.1",
     "eslint-plugin-jest": "^24.3.6",
+    "husky": "^7.0.1",
     "jest": "^27.0.6",
     "js-yaml": "^4.1.0",
     "prettier": "2.2.1",

@@ -1,5 +1,7 @@
+import { getInput } from '@actions/core'
 import { ICONS } from './constants'
-import { EnvironmentStatus } from './types/EnvironmentStatus'
+import { EnvironmentStatus } from '../types/EnvironmentStatus'
+import { EnvironmentUrls } from '../types/EnvironmentUrls'
 
 export const getWorkflowIcon = (type: EnvironmentStatus): string => {
   switch (type) {
@@ -41,4 +43,14 @@ export const getWorkflowStatusText = (type: EnvironmentStatus): string => {
       break
   }
   return text ? `[${text}] ` : ''
+}
+
+export const getEnvironmentUrlsFromInput = (): EnvironmentUrls => {
+  const urls: EnvironmentUrls = {
+    classicCms: getInput('classic_cms_url'),
+    launcher: getInput('launcher_url'),
+    skylark: getInput('skylark_url')
+  }
+
+  return urls
 }

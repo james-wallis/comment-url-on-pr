@@ -16,6 +16,7 @@ jobs:
       - run: npm ci
       - run: npm run build:all
       - name: Commit dist
+        if: ${{ git diff --exit-code }}
         run: |
           git config --global user.name 'Automated action'
           git config --global user.email 'automated-action-user@users.noreply.github.com'

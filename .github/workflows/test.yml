@@ -1,4 +1,4 @@
-name: 'build-test'
+name: Build and test
 on: # rebuild any PRs and main branch changes
   pull_request:
   push:
@@ -7,23 +7,35 @@ on: # rebuild any PRs and main branch changes
       - 'releases/*'
 
 jobs:
-  build: # make sure build/ci work properly
+  build-package:
+    name: Build and package
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: |
-          npm install
-      - run: |
-          npm run all
-  test: # make sure the action works on a clean machine without building
+      - run: npm ci
+      - run: npm run build
+      - run: npm run package
+
+  run-without-building:
+    name: Run without building
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ./
         with:
-          title: 'Test'
+          title: 'This is a test comment'
           status: ${{ job.status }}
           github_token: ${{ github.token }}
-          classic_cms_url: https://wallis.dev
-          skylark_url: https://skylark.com
-          launcher_url: https://launcher.co.uk
+          classic_cms_url: https://classic_cms_url.com
+          skylark_url: https://skylark_url.com
+          launcher_url: https://launcher_url.com
+
+  lint-test:
+    name: Lint and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm run format-check
+      - run: npm run lint
+      - run: npm test

@@ -1,5 +1,5 @@
 {
-  "name": "comment-skylark-url-on-pr",
+  "name": "comment-url-on-pr",
   "version": "0.0.0",
   "private": true,
   "description": "A GitHub Action that comments Skylark related URLs on a pull request",
@@ -10,7 +10,8 @@
     "format-check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
     "package": "ncc build --source-map --license licenses.txt",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -34,6 +35,7 @@
     "eslint": "^7.31.0",
     "eslint-plugin-github": "^4.1.1",
     "eslint-plugin-jest": "^24.3.6",
+    "husky": "^7.0.1",
     "jest": "^27.0.6",
     "js-yaml": "^4.1.0",
     "prettier": "2.2.1",

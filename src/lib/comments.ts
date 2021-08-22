@@ -10,12 +10,16 @@ const deletionText = 'The environment for this branch has been deleted.'
 const deploymentStatusText = 'To see the status of your deployment, click below or on the icon next to each commit.'
 
 const pullRequestText = (type: EnvironmentStatus): string => {
+  if (type === EnvironmentStatus.Deleted) {
+    return deletionText
+  }
+
   let isBeing = 'is being'
   if (type === EnvironmentStatus.Success) {
     isBeing = 'has been'
   }
 
-  return `This pull request ${isBeing} automatically deployed to an ephemeral environment on AWS.`
+  return `This pull request ${isBeing} automatically deployed.`
 }
 
 const workflowText = (type: EnvironmentStatus, url: string): string => {
@@ -50,10 +54,7 @@ export const createComment = (
   workflowUrl: string,
   urls: EnvironmentUrls
 ): string => {
-  let infoText = `${pullRequestText(type)}\n${deploymentStatusText}`
-  if (type === EnvironmentStatus.Deleted) {
-    infoText = deletionText
-  }
+  const infoText = `${pullRequestText(type)}\n${deploymentStatusText}`
 
   return `${COMMENT_PREFIX}
 ${convertTitleToMarkdown(title)}

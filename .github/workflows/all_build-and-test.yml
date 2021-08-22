@@ -26,9 +26,9 @@ jobs:
           title: 'This is a test comment'
           status: ${{ job.status }}
           github_token: ${{ github.token }}
-          classic_cms_url: https://classic_cms_url.com
-          skylark_url: https://skylark_url.com
-          launcher_url: https://launcher_url.com
+          classic_cms_url: https://classic-cms-url.com
+          skylark_url: https://skylark-url.com
+          launcher_url: https://launcher-url.com
 
   lint-test:
     name: Lint and test

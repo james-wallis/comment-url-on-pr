@@ -1,16 +1,16 @@
 import { COMMENT_PREFIX } from './constants'
 import { Octokit } from '../types/Octokit'
+import { context } from '@actions/github'
 
 // returns the pull request number (if one exists) given a branch ref
-const getPullRequestNumber = async (
+export const getPullRequestNumber = async (
   octokit: Octokit,
   owner: string,
   repo: string,
   ref: string
 ): Promise<number | undefined> => {
-  // If pull request, return the pull number
-  if (ref.startsWith('refs/pull/')) {
-    return parseInt(ref.split('/')[2])
+  if (context.payload.pull_request?.number) {
+    return context.payload.pull_request?.number
   }
 
   if (!ref.startsWith('refs/heads/')) {
@@ -80,15 +80,10 @@ export const commentOnPullRequest = async (
   octokit: Octokit,
   owner: string,
   repo: string,
-  ref: string,
+  pullRequestNumber: number,
   commentBody: string
 ): Promise<void> => {
-  const pullNumber = await getPullRequestNumber(octokit, owner, repo, ref)
-  if (!pullNumber) {
-    throw new Error(`No pull requests found for ref ${ref}`)
-  }
-
-  await commentOnIssue(octokit, owner, repo, pullNumber, commentBody)
+  await commentOnIssue(octokit, owner, repo, pullRequestNumber, commentBody)
 }
 
 // returns the workflow url given a workflow run id

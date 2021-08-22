@@ -94,13 +94,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getWorkflowUrl = exports.commentOnPullRequest = void 0;
+exports.getWorkflowUrl = exports.commentOnPullRequest = exports.getPullRequestNumber = void 0;
 const constants_1 = __nccwpck_require__(345);
+const github_1 = __nccwpck_require__(438);
 // returns the pull request number (if one exists) given a branch ref
 const getPullRequestNumber = (octokit, owner, repo, ref) => __awaiter(void 0, void 0, void 0, function* () {
-    // If pull request, return the pull number
-    if (ref.startsWith('refs/pull/')) {
-        return parseInt(ref.split('/')[2]);
+    var _a, _b;
+    if ((_a = github_1.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number) {
+        return (_b = github_1.context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.number;
     }
     if (!ref.startsWith('refs/heads/')) {
         return;
@@ -116,6 +117,7 @@ const getPullRequestNumber = (octokit, owner, repo, ref) => __awaiter(void 0, vo
     }
     return pullRequest.number;
 });
+exports.getPullRequestNumber = getPullRequestNumber;
 // returns the comment id of a previously created comment if one exists
 const getExistingCommentId = (octokit, owner, repo, issueNumber) => __awaiter(void 0, void 0, void 0, function* () {
     const comments = yield octokit.rest.issues.listComments({
@@ -143,12 +145,8 @@ const commentOnIssue = (octokit, owner, repo, issueNumber, body) => __awaiter(vo
     yield octokit.rest.issues.createComment(commentReqBody);
 });
 // comments on a pull request given a branch ref
-const commentOnPullRequest = (octokit, owner, repo, ref, commentBody) => __awaiter(void 0, void 0, void 0, function* () {
-    const pullNumber = yield getPullRequestNumber(octokit, owner, repo, ref);
-    if (!pullNumber) {
-        throw new Error(`No pull requests found for ref ${ref}`);
-    }
-    yield commentOnIssue(octokit, owner, repo, pullNumber, commentBody);
+const commentOnPullRequest = (octokit, owner, repo, pullRequestNumber, commentBody) => __awaiter(void 0, void 0, void 0, function* () {
+    yield commentOnIssue(octokit, owner, repo, pullRequestNumber, commentBody);
 });
 exports.commentOnPullRequest = commentOnPullRequest;
 // returns the workflow url given a workflow run id
@@ -285,15 +283,26 @@ function main() {
         }
         const octokit = github.getOctokit(github_token);
         const { repo: { owner, repo }, runId, ref } = github.context;
+        const pullRequestNumber = yield github_1.getPullRequestNumber(octokit, owner, repo, ref);
+        if (!pullRequestNumber) {
+            core.warning(`No pull request found for ref ${ref}`);
+            return;
+        }
         const workflowUrl = yield github_1.getWorkflowUrl(octokit, owner, repo, runId);
         const commentBody = comments_1.createComment(title, status, workflowUrl, urls);
-        yield github_1.commentOnPullRequest(octokit, owner, repo, ref, commentBody);
+        yield github_1.commentOnPullRequest(octokit, owner, repo, pullRequestNumber, commentBody);
     });
 }
 // eslint-disable-next-line github/no-then
 main().catch((err) => {
-    core.error(err);
-    core.setFailed(err.message);
+    if (err.message === 'Resource not accessible by integration') {
+        core.warning('github_token unable to be used. Potential reasons include: the PR is raised by Dependabot or the workflow has restricted the token access');
+        core.error(err);
+    }
+    else {
+        core.error(err);
+        core.setFailed(err.message);
+    }
 });
 
 

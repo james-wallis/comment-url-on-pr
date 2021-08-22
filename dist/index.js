@@ -286,6 +286,7 @@ function main() {
         const octokit = github.getOctokit(github_token);
         const { repo: { owner, repo }, runId, ref, payload } = github.context;
         core.info(`payload: ${JSON.stringify(payload)}`);
+        core.info(`pull request: ${JSON.stringify(payload.pull_request)}`);
         const workflowUrl = yield github_1.getWorkflowUrl(octokit, owner, repo, runId);
         const commentBody = comments_1.createComment(title, status, workflowUrl, urls);
         yield github_1.commentOnPullRequest(octokit, owner, repo, ref, commentBody);

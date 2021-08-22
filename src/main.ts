@@ -29,6 +29,7 @@ async function main(): Promise<void> {
   } = github.context
 
   core.info(`payload: ${JSON.stringify(payload)}`)
+  core.info(`pull request: ${JSON.stringify(payload.pull_request)}`)
 
   const workflowUrl = await getWorkflowUrl(octokit, owner, repo, runId)
 

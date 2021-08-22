@@ -23,10 +23,11 @@ async function main(): Promise<void> {
   const {
     repo: { owner, repo },
     runId,
-    ref
+    ref,
+    payload
   } = github.context
 
-  const pullRequestNumber = await getPullRequestNumber(octokit, owner, repo, ref)
+  const pullRequestNumber = await getPullRequestNumber(octokit, owner, repo, ref, payload)
   if (!pullRequestNumber) {
     core.warning(`No pull request found for ref ${ref}`)
     return

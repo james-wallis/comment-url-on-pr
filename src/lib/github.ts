@@ -1,16 +1,17 @@
 import { COMMENT_PREFIX } from './constants'
 import { Octokit } from '../types/Octokit'
-import { context } from '@actions/github'
+import { WebhookPayload } from '@actions/github/lib/interfaces'
 
 // returns the pull request number (if one exists) given a branch ref
 export const getPullRequestNumber = async (
   octokit: Octokit,
   owner: string,
   repo: string,
-  ref: string
+  ref: string,
+  payload: WebhookPayload
 ): Promise<number | undefined> => {
-  if (context.payload.pull_request?.number) {
-    return context.payload.pull_request?.number
+  if (payload.pull_request?.number) {
+    return payload.pull_request?.number
   }
 
   if (!ref.startsWith('refs/heads/')) {

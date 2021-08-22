@@ -96,12 +96,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getWorkflowUrl = exports.commentOnPullRequest = exports.getPullRequestNumber = void 0;
 const constants_1 = __nccwpck_require__(345);
-const github_1 = __nccwpck_require__(438);
 // returns the pull request number (if one exists) given a branch ref
-const getPullRequestNumber = (octokit, owner, repo, ref) => __awaiter(void 0, void 0, void 0, function* () {
+const getPullRequestNumber = (octokit, owner, repo, ref, payload) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
-    if ((_a = github_1.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number) {
-        return (_b = github_1.context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.number;
+    if ((_a = payload.pull_request) === null || _a === void 0 ? void 0 : _a.number) {
+        return (_b = payload.pull_request) === null || _b === void 0 ? void 0 : _b.number;
     }
     if (!ref.startsWith('refs/heads/')) {
         return;
@@ -282,8 +281,8 @@ function main() {
             throw new Error(`Invalid status '${status}' given`);
         }
         const octokit = github.getOctokit(github_token);
-        const { repo: { owner, repo }, runId, ref } = github.context;
-        const pullRequestNumber = yield github_1.getPullRequestNumber(octokit, owner, repo, ref);
+        const { repo: { owner, repo }, runId, ref, payload } = github.context;
+        const pullRequestNumber = yield github_1.getPullRequestNumber(octokit, owner, repo, ref, payload);
         if (!pullRequestNumber) {
             core.warning(`No pull request found for ref ${ref}`);
             return;

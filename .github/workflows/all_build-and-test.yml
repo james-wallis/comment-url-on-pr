@@ -13,8 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm ci
-      - run: npm run build
-      - run: npm run package
+      - run: npm run build:all
 
   run-without-building:
     name: Run without building
@@ -36,6 +35,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm ci
-      - run: npm run format-check
+      - run: npm run prettier:check
       - run: npm run lint
       - run: npm test

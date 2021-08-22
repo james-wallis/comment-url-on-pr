@@ -8,18 +8,18 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createComment = void 0;
-const constants_1 = __nccwpck_require__(345);
 const utils_1 = __nccwpck_require__(529);
-const EnvironmentStatus_1 = __nccwpck_require__(601);
+const constants_1 = __nccwpck_require__(345);
+const environmentStatus_1 = __nccwpck_require__(922);
 const convertTitleToMarkdown = (title) => `### ${title}`;
 const deletionText = 'The environment for this branch has been deleted.';
 const deploymentStatusText = 'To see the status of your deployment, click below or on the icon next to each commit.';
 const pullRequestText = (type) => {
-    if (type === EnvironmentStatus_1.EnvironmentStatus.Deleted) {
+    if (type === environmentStatus_1.EnvironmentStatus.Deleted) {
         return deletionText;
     }
     let isBeing = 'is being';
-    if (type === EnvironmentStatus_1.EnvironmentStatus.Success) {
+    if (type === environmentStatus_1.EnvironmentStatus.Success) {
         isBeing = 'has been';
     }
     return `This pull request ${isBeing} automatically deployed.`;
@@ -174,18 +174,18 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getEnvironmentUrlsFromInput = exports.getWorkflowStatusText = exports.getWorkflowIcon = void 0;
 const core_1 = __nccwpck_require__(186);
 const constants_1 = __nccwpck_require__(345);
-const EnvironmentStatus_1 = __nccwpck_require__(601);
+const environmentStatus_1 = __nccwpck_require__(922);
 const getWorkflowIcon = (type) => {
     switch (type) {
-        case EnvironmentStatus_1.EnvironmentStatus.Success:
+        case environmentStatus_1.EnvironmentStatus.Success:
             return constants_1.ICONS.SUCCESS;
-        case EnvironmentStatus_1.EnvironmentStatus.Building:
+        case environmentStatus_1.EnvironmentStatus.Building:
             return constants_1.ICONS.BUILDING;
-        case EnvironmentStatus_1.EnvironmentStatus.Cancelled:
+        case environmentStatus_1.EnvironmentStatus.Cancelled:
             return constants_1.ICONS.CANCELLED;
-        case EnvironmentStatus_1.EnvironmentStatus.Failure:
+        case environmentStatus_1.EnvironmentStatus.Failure:
             return constants_1.ICONS.FAILURE;
-        case EnvironmentStatus_1.EnvironmentStatus.Deleted:
+        case environmentStatus_1.EnvironmentStatus.Deleted:
             return constants_1.ICONS.DELETED;
         default:
             return constants_1.ICONS.UNKNOWN;
@@ -195,19 +195,19 @@ exports.getWorkflowIcon = getWorkflowIcon;
 const getWorkflowStatusText = (type) => {
     let text;
     switch (type) {
-        case EnvironmentStatus_1.EnvironmentStatus.Success:
+        case environmentStatus_1.EnvironmentStatus.Success:
             text = '';
             break;
-        case EnvironmentStatus_1.EnvironmentStatus.Building:
+        case environmentStatus_1.EnvironmentStatus.Building:
             text = 'Building';
             break;
-        case EnvironmentStatus_1.EnvironmentStatus.Cancelled:
+        case environmentStatus_1.EnvironmentStatus.Cancelled:
             text = 'Cancelled';
             break;
-        case EnvironmentStatus_1.EnvironmentStatus.Failure:
+        case environmentStatus_1.EnvironmentStatus.Failure:
             text = 'Failed';
             break;
-        case EnvironmentStatus_1.EnvironmentStatus.Deleted:
+        case environmentStatus_1.EnvironmentStatus.Deleted:
             text = 'Deleted';
             break;
         default:
@@ -268,7 +268,7 @@ const core = __importStar(__nccwpck_require__(186));
 const github = __importStar(__nccwpck_require__(438));
 const comments_1 = __nccwpck_require__(930);
 const github_1 = __nccwpck_require__(274);
-const EnvironmentStatus_1 = __nccwpck_require__(601);
+const environmentStatus_1 = __nccwpck_require__(922);
 const utils_1 = __nccwpck_require__(529);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -277,8 +277,8 @@ function main() {
         const status = core.getInput('status', required);
         const github_token = core.getInput('github_token', required);
         const urls = utils_1.getEnvironmentUrlsFromInput();
-        if (!Object.values(EnvironmentStatus_1.EnvironmentStatus).includes(status)) {
-            throw new Error(`Invalid status '${status}' given`);
+        if (!Object.values(environmentStatus_1.EnvironmentStatus).includes(status)) {
+            throw new Error(`Invalid environment status '${status}' given`);
         }
         const octokit = github.getOctokit(github_token);
         const { repo: { owner, repo }, runId, ref, payload } = github.context;
@@ -295,7 +295,7 @@ function main() {
 // eslint-disable-next-line github/no-then
 main().catch((err) => {
     if (err.message === 'Resource not accessible by integration') {
-        core.warning('github_token unable to be used. Potential reasons include: the PR is raised by Dependabot or the workflow has restricted the token access');
+        core.warning("Can't comment on PR - unable to use the supplied 'github_token'. Potential reasons include: the PR is raised by Dependabot or the workflow has restricted the token access");
         core.error(err);
     }
     else {
@@ -307,7 +307,7 @@ main().catch((err) => {
 
 /***/ }),
 
-/***/ 601:
+/***/ 922:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -460,7 +460,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
+exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
 const command_1 = __nccwpck_require__(351);
 const file_command_1 = __nccwpck_require__(717);
 const utils_1 = __nccwpck_require__(278);
@@ -638,19 +638,30 @@ exports.debug = debug;
 /**
  * Adds an error issue
  * @param message error issue message. Errors will be converted to string via toString()
+ * @param properties optional properties to add to the annotation.
  */
-function error(message) {
-    command_1.issue('error', message instanceof Error ? message.toString() : message);
+function error(message, properties = {}) {
+    command_1.issueCommand('error', utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
 }
 exports.error = error;
 /**
- * Adds an warning issue
+ * Adds a warning issue
  * @param message warning issue message. Errors will be converted to string via toString()
+ * @param properties optional properties to add to the annotation.
  */
-function warning(message) {
-    command_1.issue('warning', message instanceof Error ? message.toString() : message);
+function warning(message, properties = {}) {
+    command_1.issueCommand('warning', utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
 }
 exports.warning = warning;
+/**
+ * Adds a notice issue
+ * @param message notice issue message. Errors will be converted to string via toString()
+ * @param properties optional properties to add to the annotation.
+ */
+function notice(message, properties = {}) {
+    command_1.issueCommand('notice', utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
+}
+exports.notice = notice;
 /**
  * Writes info to log with console.log.
  * @param message info message
@@ -784,7 +795,7 @@ exports.issueCommand = issueCommand;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.toCommandValue = void 0;
+exports.toCommandProperties = exports.toCommandValue = void 0;
 /**
  * Sanitizes an input into a string so it can be passed into issueCommand safely
  * @param input input to sanitize into a string
@@ -799,6 +810,25 @@ function toCommandValue(input) {
     return JSON.stringify(input);
 }
 exports.toCommandValue = toCommandValue;
+/**
+ *
+ * @param annotationProperties
+ * @returns The command properties to send with the actual annotation command
+ * See IssueCommandProperties: https://github.com/actions/runner/blob/main/src/Runner.Worker/ActionCommandManager.cs#L646
+ */
+function toCommandProperties(annotationProperties) {
+    if (!Object.keys(annotationProperties).length) {
+        return {};
+    }
+    return {
+        title: annotationProperties.title,
+        line: annotationProperties.startLine,
+        endLine: annotationProperties.endLine,
+        col: annotationProperties.startColumn,
+        endColumn: annotationProperties.endColumn
+    };
+}
+exports.toCommandProperties = toCommandProperties;
 //# sourceMappingURL=utils.js.map
 
 /***/ }),

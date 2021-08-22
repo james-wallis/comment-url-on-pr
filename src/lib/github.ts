@@ -1,5 +1,5 @@
 import { COMMENT_PREFIX } from './constants'
-import { Octokit } from '../types/Octokit'
+import { Octokit } from '../types/octokit'
 import { WebhookPayload } from '@actions/github/lib/interfaces'
 
 // returns the pull request number (if one exists) given a branch ref

@@ -2,65 +2,44 @@
   <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
 </p>
 
-# Create a JavaScript Action using TypeScript
+# Comment environment URL on a pull request
 
-Use this template to bootstrap the creation of a TypeScript action.:rocket:
+Using GitHub Actions to create a development version of Skylark, the CMS or more? This is the GitHub Action for you.
 
-This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.
+This Action adds a comment to a pull request containing Ostmodern related environment URLs and the status of the workflow that is creating the related environments.
 
-If you are new, there's also a simpler introduction. See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
+Its aim is to improve the feedback loop by allowing URLs to be found on the PR as opposed to looking through GitHub workflows.
 
-## Create an action from this template
+![screenshot of a comment](https://user-images.githubusercontent.com/17385115/130422773-16195b94-1360-4edc-99a9-91399c1e4f9b.png)
 
-## Code in Main
 
-> First, you'll need to have a reasonably modern version of `node` handy. This won't work with versions older than 9, for instance.
+## Contributing
 
-Install the dependencies
+### Requirements
+* Node 14+
 
-```bash
-$ npm install
-```
+### Developing
 
-Build the typescript and package it for distribution
+The easiest way to develop features is to commit to a new branch and create a pull request - this way you'll see the comment added to your own pull request.
 
-```bash
-$ npm run build && npm run package
-```
+A good workflow is:
+1. Install dependencies: `npm ci`
+2. Make changes
+3. Build the Action:  `npm run build:all`
+4. Commit and push to your branch
+5. Let the Action run itself and then see the comment created on the pull request - you might need to refresh the page.
 
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
+### Tooling
+* Eslint and Prettier for code styling
+* Jest used for tests
+* Husky runs a pre-commit hook to lint and run tests
 
-## Publish to a distribution branch
 
-Actions are run from GitHub repos so we will checkin the packed dist folder.
+## Releasing
 
-Then run [ncc](https://github.com/zeit/ncc) and push the results:
+On a push to the `main` branch (either by a commit or a merged pull request) a GitHub Action is run that will:
+1. Build and package to ensure the `dist` directory is up to date
+2. Commit the `dist` directory, if updated
+3. Automatically create a new tag using the [github-tag-action](https://github.com/anothrNick/github-tag-action/releases)
 
-```bash
-$ npm run package
-$ git add dist
-$ git commit -a -m "prod dependencies"
-$ git push origin releases/v1
-```
-
-Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
-
-Your action is now published! :rocket:
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Validate
-
-You can now validate the action by referencing `./` in a workflow in your repo (see [test.yml](.github/workflows/test.yml))
-
-```yaml
-uses: ./
-with:
-  milliseconds: 1000
-```
-
-See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
-
-## Usage:
-
-After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and latest V1 action
+All that is left to do is navigate to the `releases` tab and create a new release.

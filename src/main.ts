@@ -2,8 +2,8 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import { createComment } from './lib/comments'
 import { commentOnPullRequest, getPullRequestNumber, getWorkflowUrl } from './lib/github'
-import { EnvironmentStatus } from './types/EnvironmentStatus'
-import { Octokit } from './types/Octokit'
+import { EnvironmentStatus } from './types/environmentStatus'
+import { Octokit } from './types/octokit'
 import { getEnvironmentUrlsFromInput } from './lib/utils'
 
 async function main(): Promise<void> {
@@ -15,7 +15,7 @@ async function main(): Promise<void> {
   const urls = getEnvironmentUrlsFromInput()
 
   if (!Object.values(EnvironmentStatus).includes(status)) {
-    throw new Error(`Invalid status '${status}' given`)
+    throw new Error(`Invalid environment status '${status}' given`)
   }
 
   const octokit: Octokit = github.getOctokit(github_token)
@@ -44,7 +44,7 @@ async function main(): Promise<void> {
 main().catch((err) => {
   if (err.message === 'Resource not accessible by integration') {
     core.warning(
-      'github_token unable to be used. Potential reasons include: the PR is raised by Dependabot or the workflow has restricted the token access'
+      "Can't comment on PR - unable to use the supplied 'github_token'. Potential reasons include: the PR is raised by Dependabot or the workflow has restricted the token access"
     )
     core.error(err)
   } else {

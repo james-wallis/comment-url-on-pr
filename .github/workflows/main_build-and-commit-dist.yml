@@ -15,8 +15,12 @@ jobs:
           node-version: '14'
       - run: npm ci
       - run: npm run build:all
+      - id: git_diff
+        run: |
+          git diff --exit-code
+          echo "::set-output name=exit_code::$?"
       - name: Commit dist
-        if: ${{ git diff --exit-code }}
+        if: ${{ steps.git_diff.outputs.exit_code > 0 }}
         run: |
           git config --global user.name 'Automated action'
           git config --global user.email 'automated-action-user@users.noreply.github.com'

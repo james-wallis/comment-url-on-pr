@@ -278,7 +278,7 @@ function main() {
         const github_token = core.getInput('github_token', required);
         const urls = utils_1.getEnvironmentUrlsFromInput();
         if (!Object.values(environmentStatus_1.EnvironmentStatus).includes(status)) {
-            throw new Error(`Invalid status '${status}' given`);
+            throw new Error(`Invalid environment status '${status}' given`);
         }
         const octokit = github.getOctokit(github_token);
         const { repo: { owner, repo }, runId, ref, payload } = github.context;

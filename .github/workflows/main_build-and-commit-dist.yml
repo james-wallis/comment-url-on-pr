@@ -1,9 +1,9 @@
 name: Build and commit dist
 on:
   push:
-  branches:
-    - main
-    - 'releases/*'
+    branches:
+      - main
+      - 'releases/*'
 jobs:
   report:
     name: Build, package and commit the dist dir

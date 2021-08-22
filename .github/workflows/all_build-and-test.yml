@@ -1,25 +1,22 @@
 name: Build and test
-on: # rebuild any PRs and main branch changes
-  # pull_request:
+on:
+  pull_request:
   push:
-  # branches:
-  #   - main
-  #   - 'releases/*'
+  branches:
+    - main
+    - 'releases/*'
 
 jobs:
-  build-package:
-    name: Build and package
+  build-package-run:
+    name: Build, package and run
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
       - run: npm ci
       - run: npm run build:all
-
-  run-without-building:
-    name: Run without building
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
       - uses: ./
         with:
           title: 'This is a test comment'
@@ -34,6 +31,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
       - run: npm ci
       - run: npm run prettier:check
       - run: npm run lint

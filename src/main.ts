@@ -44,7 +44,7 @@ async function main(): Promise<void> {
 main().catch((err) => {
   if (err.message === 'Resource not accessible by integration') {
     core.warning(
-      'github_token unable to be used. Potential reasons include: the PR is raised by Dependabot or the workflow has restricted the token access'
+      "Can't comment on PR - unable to use the supplied 'github_token'. Potential reasons include: the PR is raised by Dependabot or the workflow has restricted the token access"
     )
     core.error(err)
   } else {

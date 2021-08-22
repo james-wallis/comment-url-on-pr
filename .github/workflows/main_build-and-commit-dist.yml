@@ -1,0 +1,23 @@
+name: Build and commit dist
+on:
+  push:
+  branches:
+    - main
+    - 'releases/*'
+jobs:
+  report:
+    name: Build, package and commit the dist dir
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm ci
+      - run: npm run build:all
+      - name: Commit dist
+        run: |
+          # git config --global user.name 'Automated action'
+          # git config --global user.email 'bot@users.noreply.github.com'
+          git commit -am "Update dist"
+          git push

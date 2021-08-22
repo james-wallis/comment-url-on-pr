@@ -15,7 +15,7 @@ async function main(): Promise<void> {
   const urls = getEnvironmentUrlsFromInput()
 
   if (!Object.values(EnvironmentStatus).includes(status)) {
-    throw new Error(`Invalid status '${status}' given`)
+    throw new Error(`Invalid environment status '${status}' given`)
   }
 
   const octokit: Octokit = github.getOctokit(github_token)

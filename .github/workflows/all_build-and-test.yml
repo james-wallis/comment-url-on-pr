@@ -1,0 +1,40 @@
+name: Build and test
+on: # rebuild any PRs and main branch changes
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+
+jobs:
+  build-package:
+    name: Build and package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm run build:all
+
+  run-without-building:
+    name: Run without building
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        with:
+          title: 'This is a test comment'
+          status: ${{ job.status }}
+          github_token: ${{ github.token }}
+          classic_cms_url: https://classic-cms-url.com
+          skylark_url: https://skylark-url.com
+          launcher_url: https://launcher-url.com
+
+  lint-test:
+    name: Lint and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm run prettier:check
+      - run: npm run lint
+      - run: npm test

@@ -17,7 +17,8 @@ jobs:
       - run: npm run build:all
       - name: Commit dist
         run: |
-          # git config --global user.name 'Automated action'
-          # git config --global user.email 'bot@users.noreply.github.com'
+          git config --global user.name 'Automated action'
+          git config --global user.email 'automated-action-user@users.noreply.github.com'
           git commit -am "Update dist"
+          git status
           git push

@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import { createComment } from './lib/comments'
-import { commentOnPullRequest, getWorkflowUrl } from './lib/github'
+import { commentOnPullRequest, getPullRequestNumber, getWorkflowUrl } from './lib/github'
 import { EnvironmentStatus } from './types/EnvironmentStatus'
 import { Octokit } from './types/Octokit'
 import { getEnvironmentUrlsFromInput } from './lib/utils'
@@ -12,7 +12,6 @@ async function main(): Promise<void> {
   const title = core.getInput('title', required)
   const status = core.getInput('status', required) as EnvironmentStatus
   const github_token = core.getInput('github_token', required)
-
   const urls = getEnvironmentUrlsFromInput()
 
   if (!Object.values(EnvironmentStatus).includes(status)) {
@@ -24,18 +23,20 @@ async function main(): Promise<void> {
   const {
     repo: { owner, repo },
     runId,
-    ref,
-    payload
+    ref
   } = github.context
 
-  core.info(`payload: ${JSON.stringify(payload)}`)
-  core.info(`pull request: ${payload.pull_request?.number}`)
+  const pullRequestNumber = await getPullRequestNumber(octokit, owner, repo, ref)
+  if (!pullRequestNumber) {
+    core.warning('No pull request found')
+    return
+  }
 
   const workflowUrl = await getWorkflowUrl(octokit, owner, repo, runId)
 
   const commentBody = createComment(title, status, workflowUrl, urls)
 
-  await commentOnPullRequest(octokit, owner, repo, ref, commentBody)
+  await commentOnPullRequest(octokit, owner, repo, pullRequestNumber, commentBody)
 }
 
 // eslint-disable-next-line github/no-then

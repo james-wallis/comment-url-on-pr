@@ -28,7 +28,7 @@ async function main(): Promise<void> {
 
   const pullRequestNumber = await getPullRequestNumber(octokit, owner, repo, ref)
   if (!pullRequestNumber) {
-    core.warning('No pull request found')
+    core.warning(`No pull request found for ref ${ref}`)
     return
   }
 

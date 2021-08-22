@@ -285,7 +285,7 @@ function main() {
         const { repo: { owner, repo }, runId, ref } = github.context;
         const pullRequestNumber = yield github_1.getPullRequestNumber(octokit, owner, repo, ref);
         if (!pullRequestNumber) {
-            core.warning('No pull request found');
+            core.warning(`No pull request found for ref ${ref}`);
             return;
         }
         const workflowUrl = yield github_1.getWorkflowUrl(octokit, owner, repo, runId);

@@ -19,6 +19,7 @@ jobs:
         run: |
           git diff --exit-code
           echo "::set-output name=exit_code::$?"
+          exit 0
       - name: Commit dist
         if: ${{ steps.git_diff.outputs.exit_code > 0 }}
         run: |

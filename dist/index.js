@@ -15,11 +15,14 @@ const convertTitleToMarkdown = (title) => `### ${title}`;
 const deletionText = 'The environment for this branch has been deleted.';
 const deploymentStatusText = 'To see the status of your deployment, click below or on the icon next to each commit.';
 const pullRequestText = (type) => {
+    if (type === EnvironmentStatus_1.EnvironmentStatus.Deleted) {
+        return deletionText;
+    }
     let isBeing = 'is being';
     if (type === EnvironmentStatus_1.EnvironmentStatus.Success) {
         isBeing = 'has been';
     }
-    return `This pull request ${isBeing} automatically deployed to an ephemeral environment on AWS.`;
+    return `This pull request ${isBeing} automatically deployed.`;
 };
 const workflowText = (type, url) => {
     const icon = utils_1.getWorkflowIcon(type);
@@ -41,10 +44,7 @@ const urlsText = ({ classicCms, launcher, skylark }) => {
     return text;
 };
 const createComment = (title, type, workflowUrl, urls) => {
-    let infoText = `${pullRequestText(type)}\n${deploymentStatusText}`;
-    if (type === EnvironmentStatus_1.EnvironmentStatus.Deleted) {
-        infoText = deletionText;
-    }
+    const infoText = `${pullRequestText(type)}\n${deploymentStatusText}`;
     return `${constants_1.COMMENT_PREFIX}
 ${convertTitleToMarkdown(title)}
 

@@ -24,7 +24,7 @@ const workflowText = (type: EnvironmentStatus, url: string): string => {
   return `${icon} &nbsp;${status}GitHub Workflow: ${url}`
 }
 
-const urlTextLine = (icon: string, name: string, url: string): string => `${icon} &nbsp;${name} URL: ${url}\n`
+const urlTextLine = (icon: string, name: string, url: string): string => `${icon} &nbsp;${name}: ${url}\n`
 
 const urlsText = ({ classicCms, launcher, skylark }: EnvironmentUrls): string => {
   let text = ''

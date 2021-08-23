@@ -1,6 +1,9 @@
-name: 'Comment Skylark related URLs on a pull request'
-description: 'Comments given Skylark URLs on a corresponding Pull Request (if one exists)'
+name: 'Comment environment URLs on a pull request'
+description: 'Comments given Ostmodern related environment URLs on a corresponding Pull Request (if one exists)'
 author: 'James Wallis'
+branding:
+  icon: 'link'
+  color: 'blue'
 inputs:
   title:
     required: true

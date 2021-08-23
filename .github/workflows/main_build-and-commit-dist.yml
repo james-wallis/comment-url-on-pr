@@ -3,13 +3,14 @@ on:
   push:
     branches:
       - main
-      - 'releases/*'
 jobs:
   report:
     name: Build, package and commit the dist dir
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
@@ -27,3 +28,8 @@ jobs:
           git commit -am "Update dist"
           git status
           git push
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.26.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true

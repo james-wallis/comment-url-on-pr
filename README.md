@@ -13,32 +13,61 @@ Its aim is to improve the feedback loop by allowing URLs to be found on the PR a
 
 ![screenshot of a comment](https://user-images.githubusercontent.com/17385115/130422773-16195b94-1360-4edc-99a9-91399c1e4f9b.png)
 
+## Examples
+
+### With a static status
+
+```yaml
+- uses: ostmodern/comment-url-on-pr@v1.0.0
+  with:
+    title: 'A title for the comment'
+    status: building
+    github_token: ${{ github.token }}
+    classic_cms_url: https://classic-cms-url.com
+    skylark_url: https://skylark-url.com
+    launcher_url: https://launcher-url.com
+```
+
+### Using the job status
+
+```yaml
+- uses: ostmodern/comment-url-on-pr@v1.0.0
+  if: ${{ always() }} # Ensure it runs regardless of success, failure or cancel
+  with:
+    title: ${{ env.COMMENT_TITLE }}
+    status: ${{ job.status }} # The job.status (success, failure, cancelled) are valid
+    github_token: ${{ github.token }}
+    skylark_url: ${{ steps.deploy.outputs.url }}
+```
 
 ## Contributing
 
 ### Requirements
-* Node 14+
+
+- Node 14+
 
 ### Developing
 
 The easiest way to develop features is to commit to a new branch and create a pull request - this way you'll see the comment added to your own pull request.
 
 A good workflow is:
+
 1. Install dependencies: `npm ci`
 2. Make changes
-3. Build the Action:  `npm run build:all`
+3. Build the Action: `npm run build:all`
 4. Commit and push to your branch
 5. Let the Action run itself and then see the comment created on the pull request - you might need to refresh the page.
 
 ### Tooling
-* Eslint and Prettier for code styling
-* Jest used for tests
-* Husky runs a pre-commit hook to lint and run tests
 
+- Eslint and Prettier for code styling
+- Jest used for tests
+- Husky runs a pre-commit hook to lint and run tests
 
 ## Releasing
 
 On a push to the `main` branch (either by a commit or a merged pull request) a GitHub Action is run that will:
+
 1. Build and package to ensure the `dist` directory is up to date
 2. Commit the `dist` directory, if updated
 3. Automatically create a new tag using the [github-tag-action](https://github.com/anothrNick/github-tag-action/releases)

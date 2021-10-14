@@ -1,7 +1,9 @@
 import { getWorkflowIcon, getWorkflowStatusText } from './utils'
-import { COMMENT_PREFIX } from './constants'
+import { DEFAULT_COMMENT_PREFIX } from './constants'
 import { EnvironmentStatus } from '../types/environmentStatus'
 import { EnvironmentUrls } from '../types/environmentUrls'
+
+const createCommentPrefix = (commentId: string): string => `<!-- ${commentId} -->`
 
 const convertTitleToMarkdown = (title: string): string => `### ${title}`
 
@@ -52,11 +54,12 @@ export const createComment = (
   title: string,
   type: EnvironmentStatus,
   workflowUrl: string,
-  urls: EnvironmentUrls
+  urls: EnvironmentUrls,
+  commentId: string | undefined
 ): string => {
   const infoText = `${pullRequestText(type)}\n${deploymentStatusText}`
 
-  return `${COMMENT_PREFIX}
+  return `${createCommentPrefix(commentId || DEFAULT_COMMENT_PREFIX)}
 ${convertTitleToMarkdown(title)}
 
 ${infoText}

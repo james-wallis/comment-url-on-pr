@@ -26,6 +26,7 @@ Its aim is to improve the feedback loop by allowing URLs to be found on the PR a
     classic_cms_url: https://classic-cms-url.com
     skylark_url: https://skylark-url.com
     launcher_url: https://launcher-url.com
+    comment_id: 'my custom id'
 ```
 
 ### Using the job status

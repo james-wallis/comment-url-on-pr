@@ -26,6 +26,7 @@ jobs:
           classic_cms_url: https://classic-cms-url.com
           skylark_url: https://skylark-url.com
           launcher_url: https://launcher-url.com
+          custom_id: 'my-custom-id'
 
   lint-test:
     name: Lint and test

@@ -13,6 +13,7 @@ async function main(): Promise<void> {
   const status = core.getInput('status', required) as EnvironmentStatus
   const github_token = core.getInput('github_token', required)
   const urls = getEnvironmentUrlsFromInput()
+  const commentId = core.getInput('comment_id')
 
   if (!Object.values(EnvironmentStatus).includes(status)) {
     throw new Error(`Invalid environment status '${status}' given`)
@@ -35,7 +36,7 @@ async function main(): Promise<void> {
 
   const workflowUrl = await getWorkflowUrl(octokit, owner, repo, runId)
 
-  const commentBody = createComment(title, status, workflowUrl, urls)
+  const commentBody = createComment(title, status, workflowUrl, urls, commentId)
 
   await commentOnPullRequest(octokit, owner, repo, pullRequestNumber, commentBody)
 }

@@ -1,6 +1,7 @@
-import { COMMENT_PREFIX } from './constants'
+import { DEFAULT_COMMENT_PREFIX } from './constants'
 import { Octokit } from '../types/octokit'
 import { WebhookPayload } from '@actions/github/lib/interfaces'
+import { createCommentPrefix } from './comments'
 
 // returns the pull request number (if one exists) given a branch ref
 export const getPullRequestNumber = async (
@@ -36,15 +37,17 @@ const getExistingCommentId = async (
   octokit: Octokit,
   owner: string,
   repo: string,
-  issueNumber: number
+  issueNumber: number,
+  customCommentIdentifier: string | undefined
 ): Promise<number | undefined> => {
   const comments = await octokit.rest.issues.listComments({
     owner,
     repo,
     issue_number: issueNumber
   })
+  const commentIdentifier = createCommentPrefix(customCommentIdentifier || DEFAULT_COMMENT_PREFIX)
 
-  const comment = comments.data.find((comment) => comment.body?.includes(COMMENT_PREFIX))
+  const comment = comments.data.find((comment) => comment.body?.includes(commentIdentifier))
 
   return comment?.id
 }
@@ -56,9 +59,10 @@ const commentOnIssue = async (
   owner: string,
   repo: string,
   issueNumber: number,
-  body: string
+  body: string,
+  customCommentIdentifier: string | undefined
 ): Promise<void> => {
-  const commentId = await getExistingCommentId(octokit, owner, repo, issueNumber)
+  const commentId = await getExistingCommentId(octokit, owner, repo, issueNumber, customCommentIdentifier)
 
   const commentReqBody = {
     owner,
@@ -82,9 +86,10 @@ export const commentOnPullRequest = async (
   owner: string,
   repo: string,
   pullRequestNumber: number,
-  commentBody: string
+  commentBody: string,
+  customCommentIdentifier: string | undefined
 ): Promise<void> => {
-  await commentOnIssue(octokit, owner, repo, pullRequestNumber, commentBody)
+  await commentOnIssue(octokit, owner, repo, pullRequestNumber, commentBody, customCommentIdentifier)
 }
 
 // returns the workflow url given a workflow run id

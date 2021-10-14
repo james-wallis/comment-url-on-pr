@@ -7,10 +7,12 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createComment = void 0;
+exports.createComment = exports.createCommentPrefix = void 0;
 const utils_1 = __nccwpck_require__(529);
 const constants_1 = __nccwpck_require__(345);
 const environmentStatus_1 = __nccwpck_require__(922);
+const createCommentPrefix = (commentId) => `<!-- ${commentId} -->`;
+exports.createCommentPrefix = createCommentPrefix;
 const convertTitleToMarkdown = (title) => `### ${title}`;
 const deletionText = 'The environment for this branch has been deleted.';
 const deploymentStatusText = 'To see the status of your deployment, click below or on the icon next to each commit.';
@@ -43,9 +45,9 @@ const urlsText = ({ classicCms, launcher, skylark }) => {
     }
     return text;
 };
-const createComment = (title, type, workflowUrl, urls) => {
+const createComment = (title, type, workflowUrl, urls, commentId) => {
     const infoText = `${pullRequestText(type)}\n${deploymentStatusText}`;
-    return `${constants_1.COMMENT_PREFIX}
+    return `${exports.createCommentPrefix(commentId || constants_1.DEFAULT_COMMENT_PREFIX)}
 ${convertTitleToMarkdown(title)}
 
 ${infoText}
@@ -65,8 +67,8 @@ exports.createComment = createComment;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ICONS = exports.COMMENT_PREFIX = void 0;
-exports.COMMENT_PREFIX = '<!-- comment-url-on-pr -->'; // used to find the comment once it has been added to the pull request
+exports.ICONS = exports.DEFAULT_COMMENT_PREFIX = void 0;
+exports.DEFAULT_COMMENT_PREFIX = 'comment-url-on-pr'; // used to find the comment once it has been added to the pull request
 exports.ICONS = {
     SUCCESS: '✅',
     BUILDING: '🏗️',
@@ -96,6 +98,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getWorkflowUrl = exports.commentOnPullRequest = exports.getPullRequestNumber = void 0;
 const constants_1 = __nccwpck_require__(345);
+const comments_1 = __nccwpck_require__(930);
 // returns the pull request number (if one exists) given a branch ref
 const getPullRequestNumber = (octokit, owner, repo, ref, payload) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
@@ -118,19 +121,20 @@ const getPullRequestNumber = (octokit, owner, repo, ref, payload) => __awaiter(v
 });
 exports.getPullRequestNumber = getPullRequestNumber;
 // returns the comment id of a previously created comment if one exists
-const getExistingCommentId = (octokit, owner, repo, issueNumber) => __awaiter(void 0, void 0, void 0, function* () {
+const getExistingCommentId = (octokit, owner, repo, issueNumber, customCommentIdentifier) => __awaiter(void 0, void 0, void 0, function* () {
     const comments = yield octokit.rest.issues.listComments({
         owner,
         repo,
         issue_number: issueNumber
     });
-    const comment = comments.data.find((comment) => { var _a; return (_a = comment.body) === null || _a === void 0 ? void 0 : _a.includes(constants_1.COMMENT_PREFIX); });
+    const commentIdentifier = comments_1.createCommentPrefix(customCommentIdentifier || constants_1.DEFAULT_COMMENT_PREFIX);
+    const comment = comments.data.find((comment) => { var _a; return (_a = comment.body) === null || _a === void 0 ? void 0 : _a.includes(commentIdentifier); });
     return comment === null || comment === void 0 ? void 0 : comment.id;
 });
 // comments on a GitHub issue, updates an existing comment if one exists
 // in GitHub terms, pull requests are issues
-const commentOnIssue = (octokit, owner, repo, issueNumber, body) => __awaiter(void 0, void 0, void 0, function* () {
-    const commentId = yield getExistingCommentId(octokit, owner, repo, issueNumber);
+const commentOnIssue = (octokit, owner, repo, issueNumber, body, customCommentIdentifier) => __awaiter(void 0, void 0, void 0, function* () {
+    const commentId = yield getExistingCommentId(octokit, owner, repo, issueNumber, customCommentIdentifier);
     const commentReqBody = {
         owner,
         repo,
@@ -144,8 +148,8 @@ const commentOnIssue = (octokit, owner, repo, issueNumber, body) => __awaiter(vo
     yield octokit.rest.issues.createComment(commentReqBody);
 });
 // comments on a pull request given a branch ref
-const commentOnPullRequest = (octokit, owner, repo, pullRequestNumber, commentBody) => __awaiter(void 0, void 0, void 0, function* () {
-    yield commentOnIssue(octokit, owner, repo, pullRequestNumber, commentBody);
+const commentOnPullRequest = (octokit, owner, repo, pullRequestNumber, commentBody, customCommentIdentifier) => __awaiter(void 0, void 0, void 0, function* () {
+    yield commentOnIssue(octokit, owner, repo, pullRequestNumber, commentBody, customCommentIdentifier);
 });
 exports.commentOnPullRequest = commentOnPullRequest;
 // returns the workflow url given a workflow run id
@@ -277,6 +281,7 @@ function main() {
         const status = core.getInput('status', required);
         const github_token = core.getInput('github_token', required);
         const urls = utils_1.getEnvironmentUrlsFromInput();
+        const commentId = core.getInput('comment_id');
         if (!Object.values(environmentStatus_1.EnvironmentStatus).includes(status)) {
             throw new Error(`Invalid environment status '${status}' given`);
         }
@@ -288,8 +293,8 @@ function main() {
             return;
         }
         const workflowUrl = yield github_1.getWorkflowUrl(octokit, owner, repo, runId);
-        const commentBody = comments_1.createComment(title, status, workflowUrl, urls);
-        yield github_1.commentOnPullRequest(octokit, owner, repo, pullRequestNumber, commentBody);
+        const commentBody = comments_1.createComment(title, status, workflowUrl, urls, commentId);
+        yield github_1.commentOnPullRequest(octokit, owner, repo, pullRequestNumber, commentBody, commentId);
     });
 }
 // eslint-disable-next-line github/no-then

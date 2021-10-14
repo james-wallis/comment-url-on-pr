@@ -38,7 +38,7 @@ async function main(): Promise<void> {
 
   const commentBody = createComment(title, status, workflowUrl, urls, commentId)
 
-  await commentOnPullRequest(octokit, owner, repo, pullRequestNumber, commentBody)
+  await commentOnPullRequest(octokit, owner, repo, pullRequestNumber, commentBody, commentId)
 }
 
 // eslint-disable-next-line github/no-then

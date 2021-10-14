@@ -3,7 +3,7 @@ import { DEFAULT_COMMENT_PREFIX } from './constants'
 import { EnvironmentStatus } from '../types/environmentStatus'
 import { EnvironmentUrls } from '../types/environmentUrls'
 
-const createCommentPrefix = (commentId: string): string => `<!-- ${commentId} -->`
+export const createCommentPrefix = (commentId: string): string => `<!-- ${commentId} -->`
 
 const convertTitleToMarkdown = (title: string): string => `### ${title}`
 

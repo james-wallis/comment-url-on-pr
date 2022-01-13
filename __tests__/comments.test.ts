@@ -62,7 +62,7 @@ describe('Comments', () => {
       const environmentUrls: EnvironmentUrls = {
         skylark: 'https://skylark.com',
         classicCms: 'https://classic-cms.com',
-        launcher: 'https://launcher.com/login?username=admin@example.com',
+        launcher: 'https://launcher.com/login?username=admin@example.com'
       }
       const comment = createComment('title', EnvironmentStatus.Success, '', environmentUrls, '')
       expect(comment).toContain(`Launcher: [https://launcher.com/login](${environmentUrls.launcher})`)

@@ -31,7 +31,10 @@ const workflowText = (type, url) => {
     const status = utils_1.getWorkflowStatusText(type);
     return `${icon} &nbsp;${status}GitHub Workflow: ${url}`;
 };
-const urlTextLine = (icon, name, url) => `${icon} &nbsp;${name}: ${url}\n`;
+const urlTextLine = (icon, name, fullUrl) => {
+    const [displayUrl] = fullUrl.split('?');
+    return `${icon} &nbsp;${name}: [${displayUrl}](${fullUrl})\n`;
+};
 const urlsText = ({ classicCms, launcher, skylark }) => {
     let text = '';
     if (skylark) {

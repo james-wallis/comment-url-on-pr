@@ -53,9 +53,19 @@ describe('Comments', () => {
         launcher: 'https://launcher.com'
       }
       const comment = createComment('title', EnvironmentStatus.Success, '', environmentUrls, '')
-      expect(comment).toContain(`Skylark: ${environmentUrls.skylark}`)
-      expect(comment).toContain(`Launcher: ${environmentUrls.launcher}`)
-      expect(comment).toContain(`Classic CMS: ${environmentUrls.classicCms}`)
+      expect(comment).toContain(`Skylark: [${environmentUrls.skylark}](${environmentUrls.skylark})`)
+      expect(comment).toContain(`Launcher: [${environmentUrls.launcher}](${environmentUrls.launcher})`)
+      expect(comment).toContain(`Classic CMS: [${environmentUrls.classicCms}](${environmentUrls.classicCms})`)
+    })
+
+    it('should remove URL query parameters from being shown when given', () => {
+      const environmentUrls: EnvironmentUrls = {
+        skylark: 'https://skylark.com',
+        classicCms: 'https://classic-cms.com',
+        launcher: 'https://launcher.com/login?username=admin@example.com',
+      }
+      const comment = createComment('title', EnvironmentStatus.Success, '', environmentUrls, '')
+      expect(comment).toContain(`Launcher: [https://launcher.com/login](${environmentUrls.launcher})`)
     })
 
     it('should use the default comment id when an empty string is given', () => {

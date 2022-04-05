@@ -35,7 +35,7 @@ const urlTextLine = (icon: string, name: string, fullUrl: string): string => {
   return `${icon} &nbsp;${name}: [${displayUrl}](${fullUrl})\n`
 }
 
-const urlsText = ({ classicCms, launcher, skylark }: EnvironmentUrls): string => {
+const urlsText = ({ classicCms, launcher, skylark, objectRegistry }: EnvironmentUrls): string => {
   let text = ''
 
   if (skylark) {
@@ -48,6 +48,10 @@ const urlsText = ({ classicCms, launcher, skylark }: EnvironmentUrls): string =>
 
   if (classicCms) {
     text += urlTextLine('🏛️', 'Classic CMS', classicCms)
+  }
+
+  if (objectRegistry) {
+    text += urlTextLine('📒', 'Object Registry Server', objectRegistry)
   }
 
   return text

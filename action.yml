@@ -26,6 +26,9 @@ inputs:
   launcher_url:
     required: false
     description: 'URL for a Launcher'
+  object_registry_url:
+    required: false
+    description: 'URL for an Object Registry'
 runs:
   using: 'node12'
   main: 'dist/index.js'

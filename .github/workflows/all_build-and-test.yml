@@ -27,6 +27,7 @@ jobs:
           skylark_url: https://skylark-url.com
           launcher_url: https://launcher-url.com
           custom_id: 'my-custom-id'
+          object_registry_url: https://appsync-url/graphql
 
   lint-test:
     name: Lint and test

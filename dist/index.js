@@ -35,7 +35,7 @@ const urlTextLine = (icon, name, fullUrl) => {
     const [displayUrl] = fullUrl.split('?');
     return `${icon} &nbsp;${name}: [${displayUrl}](${fullUrl})\n`;
 };
-const urlsText = ({ classicCms, launcher, skylark }) => {
+const urlsText = ({ classicCms, launcher, skylark, objectRegistry }) => {
     let text = '';
     if (skylark) {
         text += urlTextLine('☁️', 'Skylark', skylark);
@@ -45,6 +45,9 @@ const urlsText = ({ classicCms, launcher, skylark }) => {
     }
     if (classicCms) {
         text += urlTextLine('🏛️', 'Classic CMS', classicCms);
+    }
+    if (objectRegistry) {
+        text += urlTextLine('📒', 'Object Registry Server', objectRegistry);
     }
     return text;
 };
@@ -228,7 +231,8 @@ const getEnvironmentUrlsFromInput = () => {
     const urls = {
         classicCms: core_1.getInput('classic_cms_url'),
         launcher: core_1.getInput('launcher_url'),
-        skylark: core_1.getInput('skylark_url')
+        skylark: core_1.getInput('skylark_url'),
+        objectRegistry: core_1.getInput('object_registry_url')
     };
     return urls;
 };

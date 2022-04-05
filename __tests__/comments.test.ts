@@ -7,7 +7,8 @@ import { EnvironmentUrls } from '../src/types/environmentUrls'
 const defaultEnvironmentUrls: EnvironmentUrls = {
   skylark: '',
   classicCms: '',
-  launcher: ''
+  launcher: '',
+  objectRegistry: ''
 }
 
 describe('Comments', () => {
@@ -44,6 +45,7 @@ describe('Comments', () => {
       expect(comment).not.toContain('Skylark')
       expect(comment).not.toContain('Launcher')
       expect(comment).not.toContain('Classic CMS')
+      expect(comment).not.toContain('Object Registry Server')
     })
 
     it('should contain all environment URLs when all are given', () => {

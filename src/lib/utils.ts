@@ -49,7 +49,8 @@ export const getEnvironmentUrlsFromInput = (): EnvironmentUrls => {
   const urls: EnvironmentUrls = {
     classicCms: getInput('classic_cms_url'),
     launcher: getInput('launcher_url'),
-    skylark: getInput('skylark_url')
+    skylark: getInput('skylark_url'),
+    objectRegistry: getInput('object_registry_url')
   }
 
   return urls

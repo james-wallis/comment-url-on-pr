@@ -55,8 +55,8 @@ const urlsText = ({ classicCms, launcher, skylark, objectRegistry, otherUrls }: 
   }
 
   if (otherUrls) {
-    for (const { label, value } of otherUrls) {
-      text += urlTextLine('🔗', label, value)
+    for (const { emoji, label, value } of otherUrls) {
+      text += urlTextLine(emoji || '🔗', label, value)
     }
   }
 

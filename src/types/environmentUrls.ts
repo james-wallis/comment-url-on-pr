@@ -4,6 +4,7 @@ export type EnvironmentUrls = {
   skylark: string
   objectRegistry: string
   otherUrls: {
+    emoji?: string
     label: string
     value: string
   }[]

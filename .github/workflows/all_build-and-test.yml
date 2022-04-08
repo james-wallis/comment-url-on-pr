@@ -24,7 +24,8 @@ jobs:
           result-encoding: string
           script: |
             const json = JSON.stringify([
-              { label: "A Custom URL", value: "https://custom-url.com" }
+              { label: "A Custom URL", value: "https://custom-url.com" },
+              { emoji: "💥", label: "With Emoji", value: "https://custom-emoji-url.com" }
             ]);
             return json;
       - uses: ./

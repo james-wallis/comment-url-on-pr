@@ -18,6 +18,15 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build:all
+      - uses: actions/github-script@v6
+        id: json
+        with:
+          result-encoding: string
+          script: |
+            const json = JSON.stringify([
+              { label: "A Custom URL", value: "https://custom-url.com" }
+            ]);
+            return json;
       - uses: ./
         with:
           title: 'This is a test comment'
@@ -28,8 +37,7 @@ jobs:
           launcher_url: https://launcher-url.com
           custom_id: 'my-custom-id'
           object_registry_url: https://appsync-url/graphql
-          additional_urls: |
-            ${{ toJSON([{ label: "A Custom URL", value: "https://custom-url.com" }]) }}
+          additional_urls: ${{ steps.json.outputs.result }}
 
   lint-test:
     name: Lint and test

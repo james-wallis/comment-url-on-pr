@@ -50,8 +50,14 @@ export const getEnvironmentUrlsFromInput = (): EnvironmentUrls => {
     classicCms: getInput('classic_cms_url'),
     launcher: getInput('launcher_url'),
     skylark: getInput('skylark_url'),
-    objectRegistry: getInput('object_registry_url')
+    objectRegistry: getInput('object_registry_url'),
+    otherUrls: getInput('additional_urls')
   }
+
+  // eslint-disable-next-line no-console
+  console.log('URLS:', urls.otherUrls)
+  // eslint-disable-next-line no-console
+  console.log('URLS parsed:', JSON.parse(urls.otherUrls as string))
 
   return urls
 }

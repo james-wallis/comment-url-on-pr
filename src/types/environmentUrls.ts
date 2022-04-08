@@ -3,4 +3,5 @@ export type EnvironmentUrls = {
   launcher: string
   skylark: string
   objectRegistry?: string
+  otherUrls?: string
 }

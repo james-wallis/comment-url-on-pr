@@ -28,6 +28,8 @@ jobs:
           launcher_url: https://launcher-url.com
           custom_id: 'my-custom-id'
           object_registry_url: https://appsync-url/graphql
+          additional_urls: |
+            ${{ toJSON([{ label: "A Custom URL", value: "https://custom-url.com" }]) }}
 
   lint-test:
     name: Lint and test

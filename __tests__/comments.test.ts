@@ -8,7 +8,8 @@ const defaultEnvironmentUrls: EnvironmentUrls = {
   skylark: '',
   classicCms: '',
   launcher: '',
-  objectRegistry: ''
+  objectRegistry: '',
+  otherUrls: []
 }
 
 describe('Comments', () => {
@@ -52,7 +53,9 @@ describe('Comments', () => {
       const environmentUrls: EnvironmentUrls = {
         skylark: 'https://skylark.com',
         classicCms: 'https://classic-cms.com',
-        launcher: 'https://launcher.com'
+        launcher: 'https://launcher.com',
+        objectRegistry: '',
+        otherUrls: []
       }
       const comment = createComment('title', EnvironmentStatus.Success, '', environmentUrls, '')
       expect(comment).toContain(`Skylark: [${environmentUrls.skylark}](${environmentUrls.skylark})`)
@@ -64,7 +67,9 @@ describe('Comments', () => {
       const environmentUrls: EnvironmentUrls = {
         skylark: 'https://skylark.com',
         classicCms: 'https://classic-cms.com',
-        launcher: 'https://launcher.com/login?username=admin@example.com'
+        launcher: 'https://launcher.com/login?username=admin@example.com',
+        objectRegistry: '',
+        otherUrls: []
       }
       const comment = createComment('title', EnvironmentStatus.Success, '', environmentUrls, '')
       expect(comment).toContain(`Launcher: [https://launcher.com/login](${environmentUrls.launcher})`)

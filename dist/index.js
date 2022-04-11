@@ -35,7 +35,7 @@ const urlTextLine = (icon, name, fullUrl) => {
     const [displayUrl] = fullUrl.split('?');
     return `${icon} &nbsp;${name}: [${displayUrl}](${fullUrl})\n`;
 };
-const urlsText = ({ classicCms, launcher, skylark, objectRegistry }) => {
+const urlsText = ({ classicCms, launcher, skylark, objectRegistry, otherUrls }) => {
     let text = '';
     if (skylark) {
         text += urlTextLine('☁️', 'Skylark', skylark);
@@ -48,6 +48,11 @@ const urlsText = ({ classicCms, launcher, skylark, objectRegistry }) => {
     }
     if (objectRegistry) {
         text += urlTextLine('📒', 'Object Registry Server', objectRegistry);
+    }
+    if (otherUrls) {
+        for (const { emoji, label, value } of otherUrls) {
+            text += urlTextLine(emoji || '🔗', label, value);
+        }
     }
     return text;
 };
@@ -232,8 +237,13 @@ const getEnvironmentUrlsFromInput = () => {
         classicCms: core_1.getInput('classic_cms_url'),
         launcher: core_1.getInput('launcher_url'),
         skylark: core_1.getInput('skylark_url'),
-        objectRegistry: core_1.getInput('object_registry_url')
+        objectRegistry: core_1.getInput('object_registry_url'),
+        otherUrls: []
     };
+    const otherUrlsInput = core_1.getInput('additional_urls');
+    if (otherUrlsInput) {
+        urls.otherUrls = JSON.parse(otherUrlsInput);
+    }
     return urls;
 };
 exports.getEnvironmentUrlsFromInput = getEnvironmentUrlsFromInput;

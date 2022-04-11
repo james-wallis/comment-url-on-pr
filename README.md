@@ -26,6 +26,7 @@ Its aim is to improve the feedback loop by allowing URLs to be found on the PR a
     classic_cms_url: https://classic-cms-url.com
     skylark_url: https://skylark-url.com
     launcher_url: https://launcher-url.com
+    object_registry_url: https://object-registry-url.com
     comment_id: 'my custom id'
 ```
 
@@ -35,10 +36,32 @@ Its aim is to improve the feedback loop by allowing URLs to be found on the PR a
 - uses: ostmodern/comment-url-on-pr@v1.0.0
   if: ${{ always() }} # Ensure it runs regardless of success, failure or cancel
   with:
-    title: ${{ env.COMMENT_TITLE }}
+    title: ${{ env.COMMENT_TITLE }} # Use env to prevent duplication in the same workflow
     status: ${{ job.status }} # The job.status (success, failure, cancelled) are valid
     github_token: ${{ github.token }}
     skylark_url: ${{ steps.deploy.outputs.url }}
+```
+
+#### Passing in custom URLs
+```yaml
+# Create an array of URLs and convert to JSON
+- uses: actions/github-script@v6
+  id: json
+  with:
+    result-encoding: string
+    script: |
+      const json = JSON.stringify([
+        { label: "A Custom URL", value: "https://custom-url.com" },
+        { emoji: "💥", label: "With Emoji", value: "https://custom-emoji-url.com" }
+      ]);
+      return json;
+- uses: ostmodern/comment-url-on-pr@v1.0.0
+  with:
+    title: 'A title for the comment'
+    status: building
+    github_token: ${{ github.token }}
+    comment_id: 'my custom id'
+    additional_urls: ${{ steps.json.outputs.result }} # Pass in result of previous step
 ```
 
 ## Contributing

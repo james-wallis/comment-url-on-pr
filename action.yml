@@ -29,6 +29,9 @@ inputs:
   object_registry_url:
     required: false
     description: 'URL for an Object Registry'
+  additional_urls:
+    required: false
+    description: 'A JSON object containing additional URLs to add'
 runs:
   using: 'node12'
   main: 'dist/index.js'

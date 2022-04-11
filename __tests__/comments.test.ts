@@ -54,13 +54,41 @@ describe('Comments', () => {
         skylark: 'https://skylark.com',
         classicCms: 'https://classic-cms.com',
         launcher: 'https://launcher.com',
-        objectRegistry: '',
+        objectRegistry: 'https://objectregistry.com',
         otherUrls: []
       }
       const comment = createComment('title', EnvironmentStatus.Success, '', environmentUrls, '')
       expect(comment).toContain(`Skylark: [${environmentUrls.skylark}](${environmentUrls.skylark})`)
       expect(comment).toContain(`Launcher: [${environmentUrls.launcher}](${environmentUrls.launcher})`)
       expect(comment).toContain(`Classic CMS: [${environmentUrls.classicCms}](${environmentUrls.classicCms})`)
+      expect(comment).toContain(
+        `Object Registry Server: [${environmentUrls.objectRegistry}](${environmentUrls.objectRegistry})`
+      )
+    })
+
+    it('should list out all otherUrls when given', () => {
+      const otherUrls: EnvironmentUrls['otherUrls'] = [
+        {
+          label: 'firsturl',
+          value: 'https://value.com'
+        },
+        {
+          label: 'secondurl',
+          value: 'https://second.com',
+          emoji: '💥'
+        }
+      ]
+      const comment = createComment(
+        'title',
+        EnvironmentStatus.Success,
+        '',
+        { ...defaultEnvironmentUrls, otherUrls },
+        ''
+      )
+      expect(comment).toContain(`${otherUrls[0].label}: [${otherUrls[0].value}](${otherUrls[0].value})`)
+      expect(comment).toContain(
+        `${otherUrls[1].emoji} &nbsp;${otherUrls[1].label}: [${otherUrls[1].value}](${otherUrls[1].value})`
+      )
     })
 
     it('should remove URL query parameters from being shown when given', () => {

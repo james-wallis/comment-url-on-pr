@@ -18,7 +18,7 @@ Its aim is to improve the feedback loop by allowing URLs to be found on the PR a
 ### With a static status
 
 ```yaml
-- uses: ostmodern/comment-url-on-pr@v1.0.0
+- uses: skylark-platform/comment-url-on-pr@v1.0.0
   with:
     title: 'A title for the comment'
     status: building

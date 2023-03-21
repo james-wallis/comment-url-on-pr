@@ -7,7 +7,7 @@
 
 Using GitHub Actions to create a development version of Skylark, the CMS or more? This is the GitHub Action for you.
 
-This Action adds a comment to a pull request containing Ostmodern related environment URLs and the status of the workflow that is creating the related environments.
+This Action adds a comment to a pull request containing Skylark-related environment URLs and the status of the workflow that is creating the related environments.
 
 Its aim is to improve the feedback loop by allowing URLs to be found on the PR as opposed to looking through GitHub workflows.
 
@@ -33,7 +33,7 @@ Its aim is to improve the feedback loop by allowing URLs to be found on the PR a
 ### Using the job status
 
 ```yaml
-- uses: ostmodern/comment-url-on-pr@v1.0.0
+- uses: skylark-platform/comment-url-on-pr@v1.0.0
   if: ${{ always() }} # Ensure it runs regardless of success, failure or cancel
   with:
     title: ${{ env.COMMENT_TITLE }} # Use env to prevent duplication in the same workflow
@@ -55,7 +55,7 @@ Its aim is to improve the feedback loop by allowing URLs to be found on the PR a
         { emoji: "💥", label: "With Emoji", value: "https://custom-emoji-url.com" }
       ]);
       return json;
-- uses: ostmodern/comment-url-on-pr@v1.0.0
+- uses: skylark-platform/comment-url-on-pr@v1.0.0
   with:
     title: 'A title for the comment'
     status: building

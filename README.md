@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://github.com/ostmodern/comment-url-on-pr/actions/workflows/all_build-and-test.yml"><img alt="build-and-test action status" src="https://github.com/ostmodern/comment-url-on-pr/actions/workflows/all_build-and-test.yml/badge.svg"></a>
-  <a href="https://github.com/ostmodern/comment-url-on-pr/actions/workflows/main_build-and-tag.yml"><img alt="build-and-tag action status" src="https://github.com/ostmodern/comment-url-on-pr/actions/workflows/main_build-and-tag.yml/badge.svg"></a>
+  <a href="https://github.com/skylark-platform/comment-url-on-pr/actions/workflows/all_build-and-test.yml"><img alt="build-and-test action status" src="https://github.com/skylark-platform/comment-url-on-pr/actions/workflows/all_build-and-test.yml/badge.svg"></a>
+  <a href="https://github.com/skylark-platform/comment-url-on-pr/actions/workflows/main_build-and-tag.yml"><img alt="build-and-tag action status" src="https://github.com/skylark-platform/comment-url-on-pr/actions/workflows/main_build-and-tag.yml/badge.svg"></a>
 </p>
 
 # Comment environment URL on a pull request

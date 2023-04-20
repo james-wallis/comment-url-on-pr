@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://github.com/ostmodern/comment-url-on-pr/actions/workflows/all_build-and-test.yml"><img alt="build-and-test action status" src="https://github.com/ostmodern/comment-url-on-pr/actions/workflows/all_build-and-test.yml/badge.svg"></a>
-  <a href="https://github.com/ostmodern/comment-url-on-pr/actions/workflows/main_build-and-tag.yml"><img alt="build-and-tag action status" src="https://github.com/ostmodern/comment-url-on-pr/actions/workflows/main_build-and-tag.yml/badge.svg"></a>
+  <a href="https://github.com/skylark-platform/comment-url-on-pr/actions/workflows/all_build-and-test.yml"><img alt="build-and-test action status" src="https://github.com/skylark-platform/comment-url-on-pr/actions/workflows/all_build-and-test.yml/badge.svg"></a>
+  <a href="https://github.com/skylark-platform/comment-url-on-pr/actions/workflows/main_build-and-tag.yml"><img alt="build-and-tag action status" src="https://github.com/skylark-platform/comment-url-on-pr/actions/workflows/main_build-and-tag.yml/badge.svg"></a>
 </p>
 
 # Comment environment URL on a pull request
@@ -18,7 +18,7 @@ Its aim is to improve the feedback loop by allowing URLs to be found on the PR a
 ### With a static status
 
 ```yaml
-- uses: ostmodern/comment-url-on-pr@v1.0.0
+- uses: skylark-platform/comment-url-on-pr@v1.0.0
   with:
     title: 'A title for the comment'
     status: building
@@ -33,7 +33,7 @@ Its aim is to improve the feedback loop by allowing URLs to be found on the PR a
 ### Using the job status
 
 ```yaml
-- uses: ostmodern/comment-url-on-pr@v1.0.0
+- uses: skylark-platform/comment-url-on-pr@v1.0.0
   if: ${{ always() }} # Ensure it runs regardless of success, failure or cancel
   with:
     title: ${{ env.COMMENT_TITLE }} # Use env to prevent duplication in the same workflow
@@ -55,7 +55,7 @@ Its aim is to improve the feedback loop by allowing URLs to be found on the PR a
         { emoji: "💥", label: "With Emoji", value: "https://custom-emoji-url.com" }
       ]);
       return json;
-- uses: ostmodern/comment-url-on-pr@v1.0.0
+- uses: skylark-platform/comment-url-on-pr@v1.0.0
   with:
     title: 'A title for the comment'
     status: building

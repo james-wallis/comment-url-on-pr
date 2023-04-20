@@ -1,5 +1,5 @@
 name: 'Comment environment URLs on a pull request'
-description: 'Comments given Ostmodern related environment URLs on a corresponding Pull Request (if one exists)'
+description: 'Comments URLs on a corresponding Pull Request (if one exists)'
 author: 'James Wallis'
 branding:
   icon: 'link'
